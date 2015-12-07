@@ -1,10 +1,6 @@
 # gametime
 
-FIXME: Write a one-line description of your library/project.
-
-## Overview
-
-FIXME: Write a paragraph about the library/project and highlight its goals.
+Implementation of the classic "Snake" in ClojureScript
 
 ## Setup
 
