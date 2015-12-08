@@ -3,18 +3,17 @@
       [cljs.test :refer-macros [deftest testing is]]
       [gametime.test-formatter :as formatter]
       [figwheel.client :as fw]
-      [dommy.core :refer-macros [sel sel1]]
       [gametime.test-helpers :as th]
-      [gametime.core :as c]))
+      [gametime.core :as gt]))
 
 (enable-console-print!)
 
-(deftest test-is_true
+(deftest test-is-true
     (is true))
 
 (defn run-tests []
     (.clear js/console)
-      (cljs.test/run-all-tests #"hickey48.*-test"))
+      (cljs.test/run-all-tests #"gametime.*-test"))
 (run-tests)
 
 ;; FW connection is optional in order to simply run tests,

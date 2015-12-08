@@ -1,4 +1,4 @@
-(ns ^:figwheel-always gametime.coure
+(ns ^:figwheel-always gametime.core
   (:require [reagent.core :as reagent :refer [atom]]))
 
 (enable-console-print!)
