@@ -6,3 +6,9 @@
       [dommy.core :refer-macros [sel sel1]]
       [hickey48.test-helpers :as th]
       [hickey48.core :as c]))
+
+(enable-console-print!)
+
+(deftest test-is_true
+    (is true))
+
