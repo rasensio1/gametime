@@ -26,6 +26,16 @@
                            :output-to "resources/public/js/compiled/gametime.js"
                            :output-dir "resources/public/js/compiled/out"
                            :source-map-timestamp true}}
+               {:id "test"
+                :source-paths ["src" "test/cljs"]
+                :compiler {:output-to "resources/public/js/compiled/test/test.js"
+                           :output-dir "resources/public/js/compiled/test/out"
+                           :optimizations :none
+                           :main hickey48.core-test
+                           :asset-path "js/compiled/test/out"
+                           :source-map true
+                           :cache-analysis true }}]}
+
                ;; This next build is an compressed minified build for
                ;; production. You can build this with:
                ;; lein cljsbuild once min
