@@ -6,10 +6,12 @@
 
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [org.clojure/clojurescript "1.7.170"]
-                 [org.clojure/core.async "0.2.374"]]
+                 [org.clojure/core.async "0.2.374"]
+                  [reagent "0.5.0-alpha3"]]
 
   :plugins [[lein-cljsbuild "1.1.1"]
-            [lein-figwheel "0.5.0-1"]]
+            [lein-figwheel "0.5.0-1"]
+            ] 
 
   :source-paths ["src"]
 
@@ -31,10 +33,10 @@
                 :compiler {:output-to "resources/public/js/compiled/test/test.js"
                            :output-dir "resources/public/js/compiled/test/out"
                            :optimizations :none
-                           :main hickey48.core-test
+                           :main gametime.core-test
                            :asset-path "js/compiled/test/out"
                            :source-map true
-                           :cache-analysis true }}]}
+                           :cache-analysis true }}
 
                ;; This next build is an compressed minified build for
                ;; production. You can build this with:
