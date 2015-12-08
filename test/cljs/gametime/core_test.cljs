@@ -8,9 +8,6 @@
 
 (enable-console-print!)
 
-(deftest test-is-true
-    (is true))
-
 (deftest test-go-right
     (is (= [1 0] (gt/go-right [0 0]))))
 
