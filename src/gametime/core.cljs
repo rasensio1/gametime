@@ -19,12 +19,20 @@
 (defonce context (.getContext (.getElementById js/document "target") "2d" ))
 
 
-(defn drawSquare [x y w h] (.fillRect context x y w h))
+(defn drawSquare [x y] (.fillRect context x y 100 100))
 (defn clearSquare [] (.clearRect context 0 0 500 500))
 
-(clearSquare)
-(drawSquare 0 0 100 100)
+(defn render-canvas [x y]
+  (clearSquare)
+  (drawSquare x y)
+)
 
+(defn tick [x]
+    (render-canvas x 0)
+      (if (<= x 400)
+            (js/setTimeout (fn [] (tick (+ 2 x))) 5))) 
+
+(tick 1)
 
 (defn on-js-reload []
   (println "reloaded")
