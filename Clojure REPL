@@ -1,0 +1,34 @@
+;; This is a text editor and also a Clojure REPL.  It behaves differently than a typical Clojure REPL. You can type anywhere and modify any of the displayed text. Commands are not sent by typing in the REPL and pressing enter. They are sent through keyboard shortcuts.
+
+ ;; REPL Execution Keybindings
+ ;; Note: These keybindings can be executed from any file and the results will be displayed in this REPL.
+ ;; See the settings for more keybindings.
+
+ ;; cmd+alt+b - execute block. Finds the block of Clojure code your cursor is in and executes that.
+
+ ;; Try it now. Put your cursor inside this block and press cmd+alt+b
+ (+ 2 3)
+
+ ;; cmd+alt+s - Executes the selection. Sends the selected text to the REPL.
+
+ ;; Try it now. Select these three lines and hit cmd + alt + s.
+ (println "hello 1")
+ (println "hello 2")
+ (println "hello 3")
+
+ ;; You can disable this help text in the settings.
+;; Loading REPL...
+Clojure 1.7.0
+user=> #'user/rows
+user=> #'user/cols
+user=> #'user/empty-row
+user=> CompilerException java.lang.ClassCastException: clojure.lang.PersistentVector cannot be cast to java.lang.Number, compiling:(form-init2491395893924505212.clj:4:1)
+user=> ClassCastException clojure.lang.PersistentVector cannot be cast to java.lang.Number  clojure.core/repeat (core.clj:2868)
+user=> [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+user=> [[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]]
+user=> CompilerException java.lang.RuntimeException: Too many arguments to def, compiling:(/private/var/folders/yv/v84lblns0xg2xd0f17s5k9nc0000gp/T/form-init2491395893924505212.clj:8:1)
+user=> #'user/go-down
+user=> [2 2]
+user=> #'user/go-down
+user=> [1 3]
+user=>(run-tests) 
