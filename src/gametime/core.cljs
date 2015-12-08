@@ -12,7 +12,13 @@
 (def empty-board (vec (repeat rows empty-row)))
 
 (def initial-state {:board empty-board
-                    :position [9 0]})
+                    :position [9 0]
+                    :direction go-right})
+
+(defn go-left [[x y]] [(dec x) y])
+(defn go-right [[x y]] [(inc x) y])
+(defn go-up [[x y]] [x (inc y)])
+(defn go-down[[x y]] [x (inc y)])
 
 
 (defn on-js-reload []
