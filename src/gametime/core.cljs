@@ -12,7 +12,7 @@
 (def empty-board (vec (repeat rows empty-row)))
 
 (def initial-state {:board empty-board
-                    :position [10 20]})
+                    :position [9 0]})
 
 
 (defn on-js-reload []
