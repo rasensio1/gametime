@@ -20,7 +20,7 @@
 (defn go-left [[x y]] [(dec x) y])
 (defn go-right [[x y]] [(inc x) y])
 (defn go-up [[x y]] [x (inc y)])
-(defn go-down [[x y]] [x (inc y)])
+(defn go-down [[x y]] [x (dec y)])
 
 (def initial-state {:board empty-board
                     :position [9 0]
