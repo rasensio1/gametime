@@ -3,11 +3,13 @@
 
 (enable-console-print!)
 
-(println "Edits to this text should show up in your developer console.")
-
-;; define your app data so that it doesn't get over-written on reload
-
 (defonce app-state (atom {:text "Hello world!"}))
+
+(def rows 20)
+(def cols 20)
+
+(def empty-row (vec (repeat cols 0)))
+(def empty-board (vec (repeat rows empty-row)))
 
 
 (defn on-js-reload []
