@@ -1,11 +1,15 @@
-(ns gametime.core
-  (:require ))
+(ns ^:figwheel-always gametime.coure
+  (:require [reagent.core :as reagent :refer [atom]]))
 
 (enable-console-print!)
 
-(println "hello again")
-
 (defonce app-state (atom {:text "Hello world!"}))
+
+(defn hello-world []
+  [:h1 (:text @app-state)])
+
+(reagent/render-component [hello-world]
+                         (. js/document (getElementById "app")))
 
 (def rows 20)
 (def cols 20)
