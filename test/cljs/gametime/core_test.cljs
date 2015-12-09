@@ -53,6 +53,12 @@
   (is (= true (gt/inside? gt/initial-state))
 ))
 
+;;(defonce app-state (atom {:pos [0 0] :dir :right :food [0 0] :points 0}))
+;;(deftest test-update-on-food
+;;  (gt/update-on-food)
+;;  (is (= 1 (get @app-state :points)))
+;;  )
+
 
 (defn run-tests []
       (cljs.test/run-all-tests #"gametime.*-test"))
