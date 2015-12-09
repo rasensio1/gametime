@@ -14,23 +14,34 @@
 (deftest test-cols
   (is (= 20 gt/cols)))
 
-(deftest test-go-right
-    (is (= [1 0] (gt/go-right [0 0]))))
+(deftest test-move-right
+  (is (= [1 0] ((get gt/movement :right) [0 0 ]))))
 
-(deftest test-go-left
-    (is (= [0 0] (gt/go-left [1 0]))))
+(deftest test-move-left
+  (is (= [-1 0] ((get gt/movement :left) [0 0 ]))))
 
-(deftest test-go-up
-    (is (= [0 1] (gt/go-up [0 0]))))
+(deftest test-move-up
+  (is (= [0 1] ((get gt/movement :up) [0 0 ]))))
 
-(deftest test-go-down
-    (is (= [0 0] (gt/go-down [0 1]))))
+(deftest test-move-down
+  (is (= [0 -1] ((get gt/movement :down) [0 0 ]))))
 
-(deftest test-initial-state
-  (is (= [0 0 ] (:pos gt/initial-state))))
+(def my-state (atom {:pos [0 0] :dir :right}))
+;;(def my-state gt/initial-state)
 
-(deftest test-get-pos
-  (is (= [0 0] (gt/get-pos {:pos "yo"}))))
+(deftest test-initial-pos
+  (is (= [0 0] (get @my-state :pos))))
+
+(deftest test-new-pos
+  ( is (= [1 0] (gt/new-pos {:pos [0 0] :dir :right} ))))
+
+
+;;(def my-state gt/app-state)
+
+;;(deftest test-new-pos
+;;  (is (= [1 0] (gt/new-pos my-state)))
+;;  )
+
 
 (defn run-tests []
     (.clear js/console)

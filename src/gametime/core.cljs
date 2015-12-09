@@ -7,18 +7,18 @@
 (def rows 20)
 (def cols 20)
 
+(defn move [[dx dy] [x y]]  [(+ dx x) (+ dy y)])
+
+(def movement { :left  (partial move [-1 0])
+                :right (partial move [1 0])
+                :up    (partial move [0 1])
+                :down  (partial move [0 -1])
+               })
+
+
 (def empty-row (vec (repeat cols 0)))
 (def empty-board (vec (repeat rows empty-row)))
 
-(def key-map {37 :left 38 :up 39 :right 40 :down})
-(defn move [x] (println x))
-
-(events/listen js/document "keydown" (fn [e] (move (.-keyCode e))))
-
-(defn go-left [[x y]] [(dec x) y])
-(defn go-right [[x y]] [(inc x) y])
-(defn go-down [[x y]] [x (dec y)])
-(defn go-up [[x y]] [x (inc y)])
 
 (defonce context (.getContext (.getElementById js/document "target") "2d" ))
 (defn drawSquare [x y] (.fillRect context x y 100 100))
@@ -29,21 +29,32 @@
   (drawSquare x y)
 )
 
-(def initial-state {:pos [0 0] :dir go-right})
-(defonce app-state initial-state)
+(def initial-state (atom {:pos [0 0] :dir :right}))
+(defonce app-state (atom initial-state))
 
-(defn get-pos [state] (:pos state))
+(defn change-dir [sym] (println sym))
 
-(defn update-pos [app-state] 
-        (conj app-state {:pos ((:dir app-state) (:pos app-state))}))
+(defn new-pos [state]
+  (let [dir  (:dir state)
+        pos  (:pos state)
+        move (get movement dir)]
+    (move pos)))
+
+(defn update-state [app-state] 
+  (assoc app-state :pos (new-pos app-state))
+)
 
 (defn tick [app-state]
-    (render-canvas (:pos app-state))
-      (if (<= (first (:pos app-state)) 400)
-          (do (update-pos app-state)
-              (js/setTimeout (fn [] (tick (update-pos app-state))) 5)))) 
+    (render-canvas (:pos @app-state))
+      (if (<= (first (:pos @app-state)) 400)
+          (do (swap! app-state (update-state app-state))
+              (js/setTimeout (fn [] (tick app-state)) 5)))) 
 
 (tick app-state)
+
+(def key-map {37 :left 38 :up 39 :right 40 :down})
+
+(events/listen js/document "keydown" (fn [e] (change-dir (.-keyCode e))))
 
 (defn on-js-reload []
   (println "reloaded")
