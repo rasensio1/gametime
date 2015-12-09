@@ -9,6 +9,14 @@
 (def board-pix 500)
 (def px-inc (/ board-pix rows))
 
+(def empty-row (vec (repeat cols 0)))
+(def empty-board (vec (repeat rows empty-row)))
+
+(defonce context (.getContext (.getElementById js/document "target") "2d" ))
+(defn drawSquare [[x y]] (.fillRect context x y 10 10))
+(defn draw-food [[x y]] (.fillRect context x y 10 10))
+(defn clearSquare [] (.clearRect context 0 0 500 500))
+
 (defn move [[dx dy] [x y]]  [(+ dx x) (+ dy y)])
 
 (def movement { :left  (partial move [(* px-inc -1) 0])
@@ -17,15 +25,6 @@
                 :down  (partial move [0 (* px-inc -1)])
                })
 
-
-(def empty-row (vec (repeat cols 0)))
-(def empty-board (vec (repeat rows empty-row)))
-
-(defonce context (.getContext (.getElementById js/document "target") "2d" ))
-
-(defn drawSquare [[x y]] (.fillRect context x y 10 10))
-(defn draw-food [[x y]] (.fillRect context x y 10 10))
-(defn clearSquare [] (.clearRect context 0 0 500 500))
 
 (defn render-canvas [state]
   (do (clearSquare)
