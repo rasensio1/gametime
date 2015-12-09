@@ -8,20 +8,38 @@
 
 (enable-console-print!)
 
-(deftest test-go-right
-    (is (= [1 0] (gt/go-right [0 0]))))
+(deftest test-rows
+  (is (= 20 gt/rows)))
 
-(deftest test-go-left
-    (is (= [0 0] (gt/go-left [1 0]))))
+(deftest test-cols
+  (is (= 20 gt/cols)))
 
-(deftest test-go-up
-    (is (= [0 1] (gt/go-up [0 0]))))
+(deftest test-move-right
+  (is (= [1 0] ((get gt/movement :right) [0 0 ]))))
 
-(deftest test-go-down
-    (is (= [0 0] (gt/go-down [0 1]))))
+(deftest test-move-left
+  (is (= [-1 0] ((get gt/movement :left) [0 0 ]))))
+
+(deftest test-move-up
+  (is (= [0 1] ((get gt/movement :up) [0 0 ]))))
+
+(deftest test-move-down
+  (is (= [0 -1] ((get gt/movement :down) [0 0 ]))))
+
+(deftest test-initial-pos
+  (is (= [0 0] (get @gt/initial-state :pos))))
+
+(deftest test-new-pos
+  ( is (= [1 0] (gt/new-pos @gt/initial-state))))
+
+(deftest test-update-state 
+ (is (= [1 0] (get (gt/update-state @gt/initial-state) :pos))))
+
+(deftest test-swap
+  (swap! gt/initial-state gt/update-state )
+  (is (= [1 0] (get @gt/initial-state :pos) )))
 
 (defn run-tests []
-    (.clear js/console)
       (cljs.test/run-all-tests #"gametime.*-test"))
 (run-tests)
 

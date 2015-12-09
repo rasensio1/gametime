@@ -1,46 +1,66 @@
 (ns ^:figwheel-always gametime.core
-  (:require [reagent.core :as r :refer [atom]]))
+  (:require [reagent.core :as r :refer [atom]]
+            [goog.events :as events]))
 
 (enable-console-print!)
-
-(defonce app-state (atom {:text "Hello world!"}))
 
 (def rows 20)
 (def cols 20)
 
+(defn move [[dx dy] [x y]]  [(+ dx x) (+ dy y)])
+
+(def movement { :left  (partial move [-1 0])
+                :right (partial move [1 0])
+                :up    (partial move [0 1])
+                :down  (partial move [0 -1])
+               })
+
+
 (def empty-row (vec (repeat cols 0)))
 (def empty-board (vec (repeat rows empty-row)))
 
-(defn go-left [[x y]] [(dec x) y])
-(defn go-right [[x y]] [(inc x) y])
-(defn go-down [[x y]] [x (dec y)])
-(defn go-up [[x y]] [x (inc y)])
 
-(defn hello-world []
-  [:h1 (:text @app-state)])
+(defonce context (.getContext (.getElementById js/document "target") "2d" ))
+(defn drawSquare [x y] (.fillRect context x y 10 10))
+(defn clearSquare [] (.clearRect context 0 0 500 500))
 
-(r/render-component [hello-world]
-                         (. js/document (getElementById "app")))
+(defn render-canvas [[x y]]
+  (clearSquare)
+  (drawSquare x y)
+)
 
-(defn simple-component []
-    [:div
-    [:p "I am a component!"]
-    [:p.someclass
-        "I have " [:strong "bold"]
-    [:span {:style {:color "red"}} " and red "] "text."]])
+(def initial-state (atom {:pos [0 0] :dir :right}))
+(defonce app-state initial-state)
 
-(defn render-simple []
-  (r/render-component [simple-component]
-                      (.-body js/document)))
+(defn new-pos [state]
+  (let [dir  (:dir state)
+        pos  (:pos state)
+        move (get movement dir)]
+    (move pos)))
 
-(render-simple)
+(defn update-state [app-state] 
+  (assoc app-state :pos (new-pos app-state))
+)
 
-(def initial-state {:board empty-board
-                    :position [9 0]
-                    :direction go-right})
+(defn inside? [app-state]
+  (let [pos (get @app-state :pos)]
+    (and (every? #(>= %1 0) pos) 
+         (every? #(<= %1 400) pos) 
+        )))
+
+(defn tick [app-state]
+    (render-canvas (get @app-state :pos))
+      (if (inside? app-state)
+          (do (swap! app-state update-state)
+              (js/setTimeout (fn [] (tick app-state)) 5)))) 
+
+(tick app-state)
+
+(def key-map {37 :left 38 :down 39 :right 40 :up})
+
+(events/listen js/document "keydown" (fn [e] (swap! app-state assoc :dir (key-map (.-keyCode e)))) (println app-state))
 
 (defn on-js-reload []
-  ;; optionally touch your app-state to force rerendering depending on
-  ;; your application
-  ;; (swap! app-state update-in [:__figwheel_counter] inc)
+  (println "reloaded")
 )
+
