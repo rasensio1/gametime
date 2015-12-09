@@ -9,35 +9,56 @@
 (enable-console-print!)
 
 (deftest test-rows
-  (is (= 20 gt/rows)))
+  (is (= 50 gt/rows)))
 
 (deftest test-cols
-  (is (= 20 gt/cols)))
+  (is (= 50 gt/cols)))
 
 (deftest test-move-right
-  (is (= [1 0] ((get gt/movement :right) [0 0 ]))))
+  (is (= [10 0] ((get gt/movement :right) [0 0 ]))))
 
 (deftest test-move-left
-  (is (= [-1 0] ((get gt/movement :left) [0 0 ]))))
+  (is (= [-10 0] ((get gt/movement :left) [0 0 ]))))
 
 (deftest test-move-up
-  (is (= [0 1] ((get gt/movement :up) [0 0 ]))))
+  (is (= [0 10] ((get gt/movement :up) [0 0 ]))))
 
 (deftest test-move-down
-  (is (= [0 -1] ((get gt/movement :down) [0 0 ]))))
+  (is (= [0 -10] ((get gt/movement :down) [0 0 ]))))
 
 (deftest test-initial-pos
   (is (= [0 0] (get @gt/initial-state :pos))))
 
+(deftest test-initial-points
+  (is (= 0 (get @gt/initial-state :points))))
+
 (deftest test-new-pos
-  ( is (= [1 0] (gt/new-pos @gt/initial-state))))
+  ( is (= [10 0] (gt/new-pos @gt/initial-state))))
 
 (deftest test-update-state 
- (is (= [1 0] (get (gt/update-state @gt/initial-state) :pos))))
+ (is (= [10 0] (get (gt/update-state @gt/initial-state) :pos))))
 
 (deftest test-swap
   (swap! gt/initial-state gt/update-state )
-  (is (= [1 0] (get @gt/initial-state :pos) )))
+  (is (= [10 0] (get @gt/initial-state :pos) )))
+
+(deftest test-pix-in-inc
+  (is (= 10 gt/px-inc)))
+
+(deftest test-rand-food
+  (is (= (type []) (type (gt/rand-food))))
+)
+
+(deftest test-inside
+  (is (= true (gt/inside? gt/initial-state))
+))
+
+;;(defonce app-state (atom {:pos [0 0] :dir :right :food [0 0] :points 0}))
+;;(deftest test-update-on-food
+;;  (gt/update-on-food)
+;;  (is (= 1 (get @app-state :points)))
+;;  )
+
 
 (defn run-tests []
       (cljs.test/run-all-tests #"gametime.*-test"))
