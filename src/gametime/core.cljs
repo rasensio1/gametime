@@ -22,18 +22,20 @@
 (def empty-board (vec (repeat rows empty-row)))
 
 (defonce context (.getContext (.getElementById js/document "target") "2d" ))
+
 (defn drawSquare [[x y]] (.fillRect context x y 10 10))
-(defn drawFood [[x y]] (drawSquare [x y] ))
+(defn draw-food [[x y]] (.fillRect context x y 10 10))
 (defn clearSquare [] (.clearRect context 0 0 500 500))
 
 (defn render-canvas [state]
-  (clearSquare)
-  (drawSquare (get @state :pos))
+  (do (clearSquare)
+      (drawSquare (get @state :pos))
+      (draw-food (get @state :food)))
 )
 
-(defn rand-food [] [(rand-int cols) (rand-int rows)])
+(defn rand-food [] [(* px-inc (rand-int cols)) (* px-inc (rand-int rows))])
 
-(def initial-state (atom {:pos [0 0] :dir :right :food rand-food}))
+(def initial-state (atom {:pos [0 0] :dir :right :food (rand-food)}))
 (defonce app-state initial-state)
 
 (defn new-pos [state]
@@ -49,16 +51,17 @@
 (defn inside? [app-state]
   (let [pos (get @app-state :pos)]
     (and (every? #(>= %1 0) pos) 
-         (every? #(<= %1 400) pos) 
+         (every? #(<= %1 board-pix) pos) 
         )))
 
 (defn tick [app-state]
+  (println (get @app-state :food))
     (render-canvas app-state)
       (if (inside? app-state)
           (do (swap! app-state update-state)
               (js/setTimeout (fn [] (tick app-state)) 50)))) 
 
-#_(tick app-state)
+(tick app-state)
 
 (def key-map {37 :left 38 :down 39 :right 40 :up})
 
