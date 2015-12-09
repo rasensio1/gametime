@@ -43,15 +43,21 @@
   (assoc app-state :pos (new-pos app-state))
 )
 
+(defn inside? [app-state]
+  (let [pos (get @app-state :pos)]
+    (and (every? #(>= %1 0) pos) 
+         (every? #(<= %1 400) pos) 
+        )))
+
 (defn tick [app-state]
     (render-canvas (get @app-state :pos))
-      (if (<= (first (get @app-state :pos)) 400)
+      (if (inside? app-state)
           (do (swap! app-state update-state)
               (js/setTimeout (fn [] (tick app-state)) 5)))) 
 
 (tick app-state)
 
-(def key-map {37 :left 38 :up 39 :right 40 :down})
+(def key-map {37 :left 38 :down 39 :right 40 :up})
 
 (events/listen js/document "keydown" (fn [e] (swap! app-state assoc :dir (key-map (.-keyCode e)))) (println app-state))
 
