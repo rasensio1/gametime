@@ -4,8 +4,10 @@
 
 (enable-console-print!)
 
-(def rows 20)
-(def cols 20)
+(def rows 50)
+(def cols 50)
+(def board-pix 500)
+(def px-in-inc (/ board-pix rows))
 
 (defn move [[dx dy] [x y]]  [(+ dx x) (+ dy y)])
 
@@ -19,7 +21,6 @@
 (def empty-row (vec (repeat cols 0)))
 (def empty-board (vec (repeat rows empty-row)))
 
-
 (defonce context (.getContext (.getElementById js/document "target") "2d" ))
 (defn drawSquare [x y] (.fillRect context x y 10 10))
 (defn clearSquare [] (.clearRect context 0 0 500 500))
@@ -29,7 +30,7 @@
   (drawSquare x y)
 )
 
-(defn rand-food [] [(rand-int 400) (rand-int 400)])
+(defn rand-food [] [(rand-int cols) (rand-int rows)])
 
 (def initial-state (atom {:pos [0 0] :dir :right :food rand-food}))
 (defonce app-state initial-state)

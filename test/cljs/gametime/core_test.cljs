@@ -9,10 +9,10 @@
 (enable-console-print!)
 
 (deftest test-rows
-  (is (= 20 gt/rows)))
+  (is (= 50 gt/rows)))
 
 (deftest test-cols
-  (is (= 20 gt/cols)))
+  (is (= 50 gt/cols)))
 
 (deftest test-move-right
   (is (= [1 0] ((get gt/movement :right) [0 0 ]))))
@@ -39,9 +39,12 @@
   (swap! gt/initial-state gt/update-state )
   (is (= [1 0] (get @gt/initial-state :pos) )))
 
+(deftest test-pix-in-in
+  (is (= 10 gt/px-in-inc)))
+
 (deftest test-rand-food
   (is (= (type []) (type (gt/rand-food))))
-  )
+)
 
 (defn run-tests []
       (cljs.test/run-all-tests #"gametime.*-test"))
