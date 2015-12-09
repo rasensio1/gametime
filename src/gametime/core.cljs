@@ -29,7 +29,9 @@
   (drawSquare x y)
 )
 
-(def initial-state (atom {:pos [0 0] :dir :right}))
+(defn rand-food [] [(rand-int 400) (rand-int 400)])
+
+(def initial-state (atom {:pos [0 0] :dir :right :food rand-food}))
 (defonce app-state initial-state)
 
 (defn new-pos [state]
@@ -54,7 +56,7 @@
           (do (swap! app-state update-state)
               (js/setTimeout (fn [] (tick app-state)) 5)))) 
 
-(tick app-state)
+#_(tick app-state)
 
 (def key-map {37 :left 38 :down 39 :right 40 :up})
 
