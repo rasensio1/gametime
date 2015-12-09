@@ -21,7 +21,7 @@
 
 
 (defonce context (.getContext (.getElementById js/document "target") "2d" ))
-(defn drawSquare [x y] (.fillRect context x y 100 100))
+(defn drawSquare [x y] (.fillRect context x y 10 10))
 (defn clearSquare [] (.clearRect context 0 0 500 500))
 
 (defn render-canvas [[x y]]
@@ -31,7 +31,6 @@
 
 (def initial-state (atom {:pos [0 0] :dir :right}))
 (defonce app-state initial-state)
-
 
 (defn new-pos [state]
   (let [dir  (:dir state)
