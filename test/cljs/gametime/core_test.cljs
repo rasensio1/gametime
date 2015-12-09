@@ -32,6 +32,9 @@
 (deftest test-initial-points
   (is (= 0 (get @gt/initial-state :points))))
 
+(deftest test-initial-history
+  (is (= [] (get @gt/initial-state :history))))
+
 (deftest test-new-pos
   ( is (= [10 0] (gt/new-pos @gt/initial-state))))
 

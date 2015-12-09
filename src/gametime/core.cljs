@@ -33,7 +33,11 @@
 
 (defn rand-food [] [(* px-inc (rand-int cols)) (* px-inc (rand-int rows))])
 
-(def initial-state (atom {:pos [0 0] :dir :right :food (rand-food) :points 0}))
+(def initial-state (atom {:pos [0 0] 
+                          :dir :right 
+                          :food (rand-food) 
+                          :points 0
+                          :history []}))
 (defonce app-state initial-state)
 
 (defn new-pos [state]
@@ -65,7 +69,7 @@
     (if (inside? app-state)
             (js/setTimeout (fn [] (tick app-state)) 50)))
 
-#_(tick app-state)
+(tick app-state)
 
 (def key-map {37 :left 38 :down 39 :right 40 :up})
 
