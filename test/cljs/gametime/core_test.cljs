@@ -8,6 +8,12 @@
 
 (enable-console-print!)
 
+(deftest test-rows
+  (is (= 20 gt/rows)))
+
+(deftest test-cols
+  (is (= 20 gt/cols)))
+
 (deftest test-go-right
     (is (= [1 0] (gt/go-right [0 0]))))
 
@@ -19,6 +25,12 @@
 
 (deftest test-go-down
     (is (= [0 0] (gt/go-down [0 1]))))
+
+(deftest test-initial-state
+  (is (= [0 0 ] (:pos gt/initial-state))))
+
+(deftest test-get-pos
+  (is (= [0 0] (gt/get-pos {:pos "yo"}))))
 
 (defn run-tests []
     (.clear js/console)
