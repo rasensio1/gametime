@@ -54,9 +54,8 @@
         )))
 
 (defn on-food? [] (if (= (get @app-state :pos) (get @app-state :food))
-                      (println "YEAH")))
+                      (swap! app-state update-in [:points] inc)))
 
-(swap! app-state update-in [:points] inc)
 
 (defn tick [app-state]
     (render-canvas app-state)
