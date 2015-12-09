@@ -59,11 +59,11 @@
                           (println "ate"))))
 
 (defn tick [app-state]
+    (swap! app-state update-state)
     (render-canvas app-state)
     (update-on-food)
     (if (inside? app-state)
-        (do (swap! app-state update-state)
-            (js/setTimeout (fn [] (tick app-state)) 50)))) 
+            (js/setTimeout (fn [] (tick app-state)) 50)))
 
 (tick app-state)
 
