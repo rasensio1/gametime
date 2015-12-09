@@ -46,6 +46,11 @@
   (is (= (type []) (type (gt/rand-food))))
 )
 
+(deftest test-inside
+  (is (= true (gt/inside? gt/initial-state))
+  ))
+
+
 (defn run-tests []
       (cljs.test/run-all-tests #"gametime.*-test"))
 (run-tests)

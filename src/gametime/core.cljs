@@ -54,13 +54,12 @@
         )))
 
 (defn tick [app-state]
-  (println (get @app-state :food))
     (render-canvas app-state)
       (if (inside? app-state)
           (do (swap! app-state update-state)
               (js/setTimeout (fn [] (tick app-state)) 50)))) 
 
-(tick app-state)
+#_(tick app-state)
 
 (def key-map {37 :left 38 :down 39 :right 40 :up})
 
