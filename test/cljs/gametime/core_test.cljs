@@ -29,6 +29,9 @@
 (deftest test-initial-pos
   (is (= [0 0] (get @gt/initial-state :pos))))
 
+(deftest test-initial-points
+  (is (= 0 (get @gt/initial-state :points))))
+
 (deftest test-new-pos
   ( is (= [10 0] (gt/new-pos @gt/initial-state))))
 
@@ -48,7 +51,7 @@
 
 (deftest test-inside
   (is (= true (gt/inside? gt/initial-state))
-  ))
+))
 
 
 (defn run-tests []

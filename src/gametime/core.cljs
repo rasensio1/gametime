@@ -34,7 +34,7 @@
 
 (defn rand-food [] [(* px-inc (rand-int cols)) (* px-inc (rand-int rows))])
 
-(def initial-state (atom {:pos [0 0] :dir :right :food (rand-food)}))
+(def initial-state (atom {:pos [0 0] :dir :right :food (rand-food) :points 0}))
 (defonce app-state initial-state)
 
 (defn new-pos [state]
@@ -55,9 +55,9 @@
 
 (defn tick [app-state]
     (render-canvas app-state)
-      (if (inside? app-state)
-          (do (swap! app-state update-state)
-              (js/setTimeout (fn [] (tick app-state)) 50)))) 
+    (if (inside? app-state)
+        (do (swap! app-state update-state)
+            (js/setTimeout (fn [] (tick app-state)) 50)))) 
 
 #_(tick app-state)
 
