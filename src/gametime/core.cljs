@@ -22,12 +22,13 @@
 (def empty-board (vec (repeat rows empty-row)))
 
 (defonce context (.getContext (.getElementById js/document "target") "2d" ))
-(defn drawSquare [x y] (.fillRect context x y 10 10))
+(defn drawSquare [[x y]] (.fillRect context x y 10 10))
+(defn drawFood [[x y]] (drawSquare [x y] ))
 (defn clearSquare [] (.clearRect context 0 0 500 500))
 
-(defn render-canvas [[x y]]
+(defn render-canvas [state]
   (clearSquare)
-  (drawSquare x y)
+  (drawSquare (get @state :pos))
 )
 
 (defn rand-food [] [(rand-int cols) (rand-int rows)])
@@ -52,10 +53,10 @@
         )))
 
 (defn tick [app-state]
-    (render-canvas (get @app-state :pos))
+    (render-canvas app-state)
       (if (inside? app-state)
           (do (swap! app-state update-state)
-              (js/setTimeout (fn [] (tick app-state)) 5)))) 
+              (js/setTimeout (fn [] (tick app-state)) 50)))) 
 
 #_(tick app-state)
 
