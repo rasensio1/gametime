@@ -39,8 +39,6 @@
   (swap! gt/initial-state gt/update-state )
   (is (= [1 0] (get @gt/initial-state :pos) )))
 
-
-
 (defn run-tests []
       (cljs.test/run-all-tests #"gametime.*-test"))
 (run-tests)

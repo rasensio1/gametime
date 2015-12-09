@@ -32,7 +32,6 @@
 (def initial-state (atom {:pos [0 0] :dir :right}))
 (defonce app-state initial-state)
 
-(defn change-dir [sym] (println sym))
 
 (defn new-pos [state]
   (let [dir  (:dir state)
@@ -44,16 +43,17 @@
   (assoc app-state :pos (new-pos app-state))
 )
 
-#_(defn tick [app-state]
-    (render-canvas (:pos @app-state))
-      (if (<= (first (:pos @app-state)) 400)
-          (do (swap! app-state (update-state app-state))
+(defn tick [app-state]
+    (render-canvas (get @app-state :pos))
+      (if (<= (first (get @app-state :pos)) 400)
+          (do (swap! app-state update-state)
               (js/setTimeout (fn [] (tick app-state)) 5)))) 
 
+(tick app-state)
 
 (def key-map {37 :left 38 :up 39 :right 40 :down})
 
-(events/listen js/document "keydown" (fn [e] (change-dir (.-keyCode e))))
+(events/listen js/document "keydown" (fn [e] (swap! app-state assoc :dir (key-map (.-keyCode e)))) (println app-state))
 
 (defn on-js-reload []
   (println "reloaded")
