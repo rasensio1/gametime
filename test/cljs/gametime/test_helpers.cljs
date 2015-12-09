@@ -13,4 +13,3 @@
   [id]
   (dom/getElement (name id)))
 
-(def rflush reagent/flush)

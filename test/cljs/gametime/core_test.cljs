@@ -26,25 +26,22 @@
 (deftest test-move-down
   (is (= [0 -1] ((get gt/movement :down) [0 0 ]))))
 
-(def my-state (atom {:pos [0 0] :dir :right}))
-;;(def my-state gt/initial-state)
-
 (deftest test-initial-pos
-  (is (= [0 0] (get @my-state :pos))))
+  (is (= [0 0] (get @gt/initial-state :pos))))
 
 (deftest test-new-pos
-  ( is (= [1 0] (gt/new-pos {:pos [0 0] :dir :right} ))))
+  ( is (= [1 0] (gt/new-pos @gt/initial-state))))
 
+(deftest test-update-state 
+ (is (= [1 0] (get (gt/update-state @gt/initial-state) :pos))))
 
-;;(def my-state gt/app-state)
+(deftest test-swap
+  (swap! gt/initial-state gt/update-state )
+  (is (= [1 0] (get @gt/initial-state :pos) )))
 
-;;(deftest test-new-pos
-;;  (is (= [1 0] (gt/new-pos my-state)))
-;;  )
 
 
 (defn run-tests []
-    (.clear js/console)
       (cljs.test/run-all-tests #"gametime.*-test"))
 (run-tests)
 
