@@ -25,7 +25,6 @@
                 :down  (partial move [0 (* px-inc -1)])
                })
 
-
 (defn render-canvas [state]
   (do (clearSquare)
       (drawSquare (get @state :pos))
@@ -53,17 +52,18 @@
          (every? #(<= %1 board-pix) pos) 
         )))
 
-(defn on-food? [] (if (= (get @app-state :pos) (get @app-state :food))
-                      (swap! app-state update-in [:points] inc)))
+(defn update-on-food [] (if (= (get @app-state :pos) (get @app-state :food))
+                      (do (swap! app-state update-in [:points] inc) 
+                          (swap! app-state assoc :food (rand-food))
 
+                          (println "ate"))))
 
 (defn tick [app-state]
     (render-canvas app-state)
-    (on-food?)
+    (update-on-food)
     (if (inside? app-state)
         (do (swap! app-state update-state)
             (js/setTimeout (fn [] (tick app-state)) 50)))) 
-
 
 (tick app-state)
 
