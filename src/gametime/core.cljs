@@ -53,13 +53,20 @@
          (every? #(<= %1 board-pix) pos) 
         )))
 
+(defn on-food? [] (if (= (get @app-state :pos) (get @app-state :food))
+                      (println "YEAH")))
+
+(swap! app-state update-in [:points] inc)
+
 (defn tick [app-state]
     (render-canvas app-state)
+    (on-food?)
     (if (inside? app-state)
         (do (swap! app-state update-state)
             (js/setTimeout (fn [] (tick app-state)) 50)))) 
 
-#_(tick app-state)
+
+(tick app-state)
 
 (def key-map {37 :left 38 :down 39 :right 40 :up})
 
