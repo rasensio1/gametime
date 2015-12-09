@@ -15,32 +15,32 @@
   (is (= 50 gt/cols)))
 
 (deftest test-move-right
-  (is (= [1 0] ((get gt/movement :right) [0 0 ]))))
+  (is (= [10 0] ((get gt/movement :right) [0 0 ]))))
 
 (deftest test-move-left
-  (is (= [-1 0] ((get gt/movement :left) [0 0 ]))))
+  (is (= [-10 0] ((get gt/movement :left) [0 0 ]))))
 
 (deftest test-move-up
-  (is (= [0 1] ((get gt/movement :up) [0 0 ]))))
+  (is (= [0 10] ((get gt/movement :up) [0 0 ]))))
 
 (deftest test-move-down
-  (is (= [0 -1] ((get gt/movement :down) [0 0 ]))))
+  (is (= [0 -10] ((get gt/movement :down) [0 0 ]))))
 
 (deftest test-initial-pos
   (is (= [0 0] (get @gt/initial-state :pos))))
 
 (deftest test-new-pos
-  ( is (= [1 0] (gt/new-pos @gt/initial-state))))
+  ( is (= [10 0] (gt/new-pos @gt/initial-state))))
 
 (deftest test-update-state 
- (is (= [1 0] (get (gt/update-state @gt/initial-state) :pos))))
+ (is (= [10 0] (get (gt/update-state @gt/initial-state) :pos))))
 
 (deftest test-swap
   (swap! gt/initial-state gt/update-state )
-  (is (= [1 0] (get @gt/initial-state :pos) )))
+  (is (= [10 0] (get @gt/initial-state :pos) )))
 
-(deftest test-pix-in-in
-  (is (= 10 gt/px-in-inc)))
+(deftest test-pix-in-inc
+  (is (= 10 gt/px-inc)))
 
 (deftest test-rand-food
   (is (= (type []) (type (gt/rand-food))))

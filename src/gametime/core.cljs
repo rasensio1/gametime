@@ -7,14 +7,14 @@
 (def rows 50)
 (def cols 50)
 (def board-pix 500)
-(def px-in-inc (/ board-pix rows))
+(def px-inc (/ board-pix rows))
 
 (defn move [[dx dy] [x y]]  [(+ dx x) (+ dy y)])
 
-(def movement { :left  (partial move [-1 0])
-                :right (partial move [1 0])
-                :up    (partial move [0 1])
-                :down  (partial move [0 -1])
+(def movement { :left  (partial move [(* px-inc -1) 0])
+                :right (partial move [px-inc 0])
+                :up    (partial move [0 px-inc])
+                :down  (partial move [0 (* px-inc -1)])
                })
 
 
@@ -61,7 +61,7 @@
 
 (def key-map {37 :left 38 :down 39 :right 40 :up})
 
-(events/listen js/document "keydown" (fn [e] (swap! app-state assoc :dir (key-map (.-keyCode e)))) (println app-state))
+(events/listen js/document "keydown" (fn [e] (swap! app-state assoc :dir (key-map (.-keyCode e)))))
 
 (defn on-js-reload []
   (println "reloaded")
