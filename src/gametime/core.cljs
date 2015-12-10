@@ -26,7 +26,8 @@
                 :down  (partial move [0 (* px-inc -1)])
                })
 
-(defn my-tail [state] (take (get @state :points) (reverse (get @state :history))))
+(defn my-tail [state] (vec (take (get @state :points) 
+                            (reverse (get @state :history)))))
 
 (defn render-canvas [state]
   (do (clearSquare)
@@ -64,8 +65,7 @@
 
 (defn not-over-tail? [app-state] 
   (let [pos (get @app-state :pos)]
-    (not-any? #(= pos %) (my-tail app-state))
-                               ))
+    (not-any? #(= pos %) (my-tail app-state))))
 
 (defn no-collision? [app-state]
   (and (inside? app-state) (not-over-tail? app-state) 
@@ -73,8 +73,7 @@
 
 (defn update-on-food [] (if (= (get @app-state :pos) (get @app-state :food))
                       (do (swap! app-state update-in [:points] inc) 
-                          (swap! app-state assoc :food (rand-food))
-                          (println "ate"))))
+                          (swap! app-state assoc :food (rand-food)))))
 
 (defn new-history [app-state] (conj (get @app-state :history) 
                                     (get @app-state :pos)))
@@ -86,10 +85,10 @@
     (swap! app-state update-state)
     (render-canvas app-state)
     (update-on-food)
-    (if (inside? app-state)
+    (if (no-collision? app-state)
             (js/setTimeout (fn [] (tick app-state)) 50)))
 
-#_(tick app-state)
+(tick app-state)
 
 (def key-map {37 :left 38 :down 39 :right 40 :up})
 

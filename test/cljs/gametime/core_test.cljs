@@ -66,14 +66,20 @@
   (is (= [] (gt/my-tail gt/initial-state)))
 )
 
-(defonce tail-state gt/initial-state)
+(def tail-state gt/initial-state)
 (deftest test-my-tail-populated
   (gt/pos-history tail-state)
   (swap! tail-state update-in [:points] inc)
-  (is (= [0 0] (gt/my-tail tail-state)))
+  (is (= [[0 0]] (gt/my-tail tail-state)))
 )
 
-
+(def tail-state-2 gt/initial-state)
+(deftest test-not-over-tail
+  (gt/pos-history tail-state-2)
+  (is (= [[0 0]] (gt/my-tail tail-state-2)))
+  (is (= [0 0] (get @tail-state-2 :pos)))
+  (is (= false (gt/not-over-tail? tail-state-2)))
+  )
 
 
 (defn run-tests []
