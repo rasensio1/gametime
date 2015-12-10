@@ -41,10 +41,6 @@
 (deftest test-update-state 
  (is (= [10 0] (get (gt/update-state @gt/initial-state) :pos))))
 
-(deftest test-swap
-  (swap! gt/initial-state gt/update-state )
-  (is (= [10 0] (get @gt/initial-state :pos) )))
-
 (deftest test-pix-in-inc
   (is (= 10 gt/px-inc)))
 
@@ -61,6 +57,10 @@
 ;;  (gt/update-on-food)
 ;;  (is (= 1 (get @app-state :points)))
 ;;  )
+
+(deftest test-new-history
+  (is (= [[0 0]] (gt/new-history gt/initial-state)))
+  )
 
 
 (defn run-tests []

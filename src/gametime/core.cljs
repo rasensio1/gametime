@@ -61,11 +61,14 @@
     (and (every? #(>= %1 0) pos) 
          (every? #(<= %1 board-pix) pos) 
         )))
-(defn over-tail? [app-state]
-  )
+
+(defn not-over-tail? [app-state] 
+  (let [pos (get @app-state :pos)]
+    (not-any? #(= pos %) (my-tail app-state))
+                               ))
 
 (defn no-collision? [app-state]
-  (and (inside? app-state) (over-tail? app-state) 
+  (and (inside? app-state) (not-over-tail? app-state) 
   ))
 
 (defn update-on-food [] (if (= (get @app-state :pos) (get @app-state :food))
@@ -86,7 +89,7 @@
     (if (inside? app-state)
             (js/setTimeout (fn [] (tick app-state)) 50)))
 
-(tick app-state)
+#_(tick app-state)
 
 (def key-map {37 :left 38 :down 39 :right 40 :up})
 
