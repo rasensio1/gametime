@@ -65,7 +65,10 @@
                           (swap! app-state assoc :food (rand-food))
                           (println "ate"))))
 
-(defn pos-history [app-state] (swap! app-state assoc :history [[0 0] [0 10]]))
+(defn new-history [app-state] (conj (get @app-state :history) 
+                                    (get @app-state :pos)))
+
+(defn pos-history [app-state] (swap! app-state assoc :history (new-history app-state)))
 
 (defn tick [app-state]
     (pos-history app-state)
