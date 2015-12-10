@@ -6,17 +6,15 @@
 
 (def rows 50)
 (def cols 50)
+(def sq 10)
 (defonce context 
   (.getContext 
     (.getElementById js/document "target") "2d" ))
 (def board-pix (js/parseInt (aget context "canvas" "width")))
 (def px-inc (/ board-pix rows))
 
-
-;;pull out size of square
-(defn drawSquare [[x y]] (.fillRect context x y 10 10))
-(defn draw-food [[x y]] (.fillRect context x y 10 10))
-;;USE CANVAS WIDTHD
+(defn drawSquare [[x y]] (.fillRect context x y sq sq))
+(defn draw-food [[x y]] (.fillRect context x y sq sq))
 (defn clearSquare [] (.clearRect context 0 0 board-pix board-pix))
 (defn draw-tail [coll] (doseq [tuple coll] (drawSquare tuple)))
 
@@ -55,7 +53,7 @@
         move (get movement dir)]
     (move pos)))
 
-(defn update-state [app-state] 
+(defn update-pos [app-state] 
   (assoc app-state :pos (new-pos app-state)))
 
 (defn inside? [app-state]
@@ -84,7 +82,7 @@
 (defn tick [app-state]
     (pos-history app-state)
     ;;rename to update pos
-    (swap! app-state update-state)
+    (swap! app-state update-pos)
     (render-canvas app-state)
     (update-on-food)
     (if (no-collision? app-state)
