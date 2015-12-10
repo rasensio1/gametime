@@ -7,14 +7,17 @@
 (def rows 50)
 (def cols 50)
 (def board-pix 500)
+;;FIND CANVAS WIDTH
 (def px-inc (/ board-pix rows))
 
 (def empty-row (vec (repeat cols 0)))
 (def empty-board (vec (repeat rows empty-row)))
 
 (defonce context (.getContext (.getElementById js/document "target") "2d" ))
+;;pull out size of square
 (defn drawSquare [[x y]] (.fillRect context x y 10 10))
 (defn draw-food [[x y]] (.fillRect context x y 10 10))
+;;USE CANVAS WIDTHD
 (defn clearSquare [] (.clearRect context 0 0 500 500))
 (defn draw-tail [coll] (doseq [tuple coll] (drawSquare tuple)))
 
@@ -54,8 +57,7 @@
     (move pos)))
 
 (defn update-state [app-state] 
-  (assoc app-state :pos (new-pos app-state))
-)
+  (assoc app-state :pos (new-pos app-state)))
 
 (defn inside? [app-state]
   (let [pos (get @app-state :pos)]
@@ -82,6 +84,7 @@
 
 (defn tick [app-state]
     (pos-history app-state)
+    ;;rename to update pos
     (swap! app-state update-state)
     (render-canvas app-state)
     (update-on-food)
@@ -91,7 +94,6 @@
 (tick app-state)
 
 (def key-map {37 :left 38 :down 39 :right 40 :up})
-
 (events/listen js/document "keydown" (fn [e] (swap! app-state assoc :dir (key-map (.-keyCode e)))))
 
 (defn on-js-reload []
