@@ -33,9 +33,7 @@
   (do (clearSquare)
       (drawSquare (get @state :pos))
       (draw-food (get @state :food))
-      (draw-tail (my-tail state))
-  )
-)
+      (draw-tail (my-tail state))))
 
 (defn rand-food [] [(* px-inc (rand-int cols)) (* px-inc (rand-int rows))])
 
@@ -71,8 +69,8 @@
   ))
 
 (defn update-on-food [] (if (= (get @app-state :pos) (get @app-state :food))
-                      (do (swap! app-state update-in [:points] inc) 
-                          (swap! app-state assoc :food (rand-food)))))
+                                (do (swap! app-state update-in [:points] inc) 
+                                    (swap! app-state assoc :food (rand-food)))))
 
 (defn new-history [app-state] 
   (conj (get @app-state :history) 
@@ -99,6 +97,5 @@
                               :dir (key-map (.-keyCode e)))))
 
 (defn on-js-reload []
-  (println "reloaded")
-)
+  (println "reloaded"))
 
