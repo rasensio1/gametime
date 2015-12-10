@@ -74,14 +74,16 @@
                       (do (swap! app-state update-in [:points] inc) 
                           (swap! app-state assoc :food (rand-food)))))
 
-(defn new-history [app-state] (conj (get @app-state :history) 
-                                    (get @app-state :pos)))
+(defn new-history [app-state] 
+  (conj (get @app-state :history) 
+        (get @app-state :pos)))
 
-(defn pos-history [app-state] (swap! app-state assoc :history (new-history app-state)))
+(defn pos-history [app-state] 
+  (swap! app-state assoc 
+         :history (new-history app-state)))
 
 (defn tick [app-state]
     (pos-history app-state)
-    ;;rename to update pos
     (swap! app-state update-pos)
     (render-canvas app-state)
     (update-on-food)
@@ -91,7 +93,10 @@
 #_(tick app-state)
 
 (def key-map {37 :left 38 :down 39 :right 40 :up})
-(events/listen js/document "keydown" (fn [e] (swap! app-state assoc :dir (key-map (.-keyCode e)))))
+
+(events/listen js/document "keydown" 
+               (fn [e] (swap! app-state assoc 
+                              :dir (key-map (.-keyCode e)))))
 
 (defn on-js-reload []
   (println "reloaded")
