@@ -16,6 +16,7 @@
 (defn drawSquare [[x y]] (.fillRect context x y 10 10))
 (defn draw-food [[x y]] (.fillRect context x y 10 10))
 (defn clearSquare [] (.clearRect context 0 0 500 500))
+(defn draw-tail [coll] (doseq [tuple coll] (drawSquare tuple)))
 
 (defn move [[dx dy] [x y]]  [(+ dx x) (+ dy y)])
 
@@ -28,7 +29,9 @@
 (defn render-canvas [state]
   (do (clearSquare)
       (drawSquare (get @state :pos))
-      (draw-food (get @state :food)))
+      (draw-food (get @state :food))
+      (draw-tail (get @state :history))
+  )
 )
 
 (defn rand-food [] [(* px-inc (rand-int cols)) (* px-inc (rand-int rows))])
@@ -38,6 +41,7 @@
                           :food (rand-food) 
                           :points 0
                           :history []}))
+
 (defonce app-state initial-state)
 
 (defn new-pos [state]
@@ -59,10 +63,12 @@
 (defn update-on-food [] (if (= (get @app-state :pos) (get @app-state :food))
                       (do (swap! app-state update-in [:points] inc) 
                           (swap! app-state assoc :food (rand-food))
-
                           (println "ate"))))
 
+(defn pos-history [app-state] (swap! app-state assoc :history [[0 0] [0 10]]))
+
 (defn tick [app-state]
+    (pos-history app-state)
     (swap! app-state update-state)
     (render-canvas app-state)
     (update-on-food)
