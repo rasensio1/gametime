@@ -26,11 +26,13 @@
                 :down  (partial move [0 (* px-inc -1)])
                })
 
+(defn my-tail [state] (take (get @state :points) (reverse (get @state :history))))
+
 (defn render-canvas [state]
   (do (clearSquare)
       (drawSquare (get @state :pos))
       (draw-food (get @state :food))
-      (draw-tail (take (get @state :points) (reverse (get @state :history))))
+      (draw-tail (my-tail state))
   )
 )
 
@@ -59,6 +61,12 @@
     (and (every? #(>= %1 0) pos) 
          (every? #(<= %1 board-pix) pos) 
         )))
+(defn over-tail? [app-state]
+  )
+
+(defn no-collision? [app-state]
+  (and (inside? app-state) (over-tail? app-state) 
+  ))
 
 (defn update-on-food [] (if (= (get @app-state :pos) (get @app-state :food))
                       (do (swap! app-state update-in [:points] inc) 
