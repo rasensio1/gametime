@@ -60,7 +60,12 @@
 
 (deftest test-new-history
   (is (= [[0 0]] (gt/new-history gt/initial-state)))
+)
+
+(deftest test-my-tail-empty
+  (is (= [] (gt/my-tail gt/initial-state)))
   )
+
 
 
 (defn run-tests []
