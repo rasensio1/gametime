@@ -6,14 +6,17 @@
 
 (def rows 50)
 (def cols 50)
-(def board-pix 500)
+(defonce context 
+  (.getContext 
+    (.getElementById js/document "target") "2d" ))
+(def board-pix (js/parseInt (aget context "canvas" "width")))
 ;;FIND CANVAS WIDTH
 (def px-inc (/ board-pix rows))
 
 (def empty-row (vec (repeat cols 0)))
 (def empty-board (vec (repeat rows empty-row)))
 
-(defonce context (.getContext (.getElementById js/document "target") "2d" ))
+
 ;;pull out size of square
 (defn drawSquare [[x y]] (.fillRect context x y 10 10))
 (defn draw-food [[x y]] (.fillRect context x y 10 10))
@@ -91,7 +94,7 @@
     (if (no-collision? app-state)
             (js/setTimeout (fn [] (tick app-state)) 50)))
 
-(tick app-state)
+#_(tick app-state)
 
 (def key-map {37 :left 38 :down 39 :right 40 :up})
 (events/listen js/document "keydown" (fn [e] (swap! app-state assoc :dir (key-map (.-keyCode e)))))
