@@ -30,7 +30,7 @@
   (do (clearSquare)
       (drawSquare (get @state :pos))
       (draw-food (get @state :food))
-      (draw-tail (get @state :history))
+      (draw-tail (take (get @state :points) (reverse (get @state :history))))
   )
 )
 
