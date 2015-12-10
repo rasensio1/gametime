@@ -34,11 +34,11 @@
 }
 
 .the-button {
-  color: red;
   position: absolute;
-  left: 220px;
+  left: 210px;
   top: 240px;
   font-size: 2em;
+  padding: 15px;
   border: 2px solid black;
 }
 
