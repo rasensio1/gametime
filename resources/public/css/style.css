@@ -6,7 +6,43 @@
   padding-right: 0;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 5em;
+  margin-top: 2em;
   display: block;
 }
 
+.canvas {
+  position: relative;
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 2em;
+  display: block;
+  width: 510px;
+}
+
+.title {
+  margin: auto;
+}
+
+#title-text {
+  text-align: center;
+  font-size: 3em;
+}
+
+#start-button {
+}
+
+.the-button {
+  color: red;
+  position: absolute;
+  left: 220px;
+  top: 240px;
+  font-size: 2em;
+  border: 2px solid black;
+}
+
+#points {
+  text-align: center;
+  font-size: 2em;
+}

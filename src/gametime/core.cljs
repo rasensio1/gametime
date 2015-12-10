@@ -80,7 +80,30 @@
   (swap! app-state assoc 
          :history (new-history app-state)))
 
+(def key-map {37 :left 38 :down 39 :right 40 :up})
+(events/listen js/document "keydown" 
+               (fn [e] (swap! app-state assoc 
+                              :dir (key-map (.-keyCode e)))))
+
+(defn points-holder []
+        [:p 
+         "Score: " (get @app-state :points) ])
+
+(defn start-button []
+  [:div.the-button "Start" ])
+
+(defn render-start []
+    (r/render-component [start-button]
+                        (js/document.getElementById "start-button")))
+
+(defn render-points []
+    (r/render-component [points-holder]
+                        (js/document.getElementById "points")))
+
+(render-start)
+
 (defn tick [app-state]
+    (render-points)
     (pos-history app-state)
     (swap! app-state update-pos)
     (render-canvas app-state)
@@ -88,13 +111,8 @@
     (if (no-collision? app-state)
             (js/setTimeout (fn [] (tick app-state)) 50)))
 
+
 #_(tick app-state)
-
-(def key-map {37 :left 38 :down 39 :right 40 :up})
-
-(events/listen js/document "keydown" 
-               (fn [e] (swap! app-state assoc 
-                              :dir (key-map (.-keyCode e)))))
 
 (defn on-js-reload []
   (println "reloaded"))
