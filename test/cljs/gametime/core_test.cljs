@@ -32,15 +32,14 @@
 (deftest test-initial-points
   (is (= 0 (get @gt/initial-state :points))))
 
+(deftest test-initial-history
+  (is (= [] (get @gt/initial-state :history))))
+
 (deftest test-new-pos
   ( is (= [10 0] (gt/new-pos @gt/initial-state))))
 
 (deftest test-update-state 
  (is (= [10 0] (get (gt/update-state @gt/initial-state) :pos))))
-
-(deftest test-swap
-  (swap! gt/initial-state gt/update-state )
-  (is (= [10 0] (get @gt/initial-state :pos) )))
 
 (deftest test-pix-in-inc
   (is (= 10 gt/px-inc)))
@@ -58,6 +57,29 @@
 ;;  (gt/update-on-food)
 ;;  (is (= 1 (get @app-state :points)))
 ;;  )
+
+(deftest test-new-history
+  (is (= [[0 0]] (gt/new-history gt/initial-state)))
+)
+
+(deftest test-my-tail-empty
+  (is (= [] (gt/my-tail gt/initial-state)))
+)
+
+(def tail-state gt/initial-state)
+(deftest test-my-tail-populated
+  (gt/pos-history tail-state)
+  (swap! tail-state update-in [:points] inc)
+  (is (= [[0 0]] (gt/my-tail tail-state)))
+)
+
+(def tail-state-2 gt/initial-state)
+(deftest test-not-over-tail
+  (gt/pos-history tail-state-2)
+  (is (= [[0 0]] (gt/my-tail tail-state-2)))
+  (is (= [0 0] (get @tail-state-2 :pos)))
+  (is (= false (gt/not-over-tail? tail-state-2)))
+  )
 
 
 (defn run-tests []

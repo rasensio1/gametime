@@ -16,6 +16,7 @@
 (defn drawSquare [[x y]] (.fillRect context x y 10 10))
 (defn draw-food [[x y]] (.fillRect context x y 10 10))
 (defn clearSquare [] (.clearRect context 0 0 500 500))
+(defn draw-tail [coll] (doseq [tuple coll] (drawSquare tuple)))
 
 (defn move [[dx dy] [x y]]  [(+ dx x) (+ dy y)])
 
@@ -25,15 +26,25 @@
                 :down  (partial move [0 (* px-inc -1)])
                })
 
+(defn my-tail [state] (vec (take (get @state :points) 
+                            (reverse (get @state :history)))))
+
 (defn render-canvas [state]
   (do (clearSquare)
       (drawSquare (get @state :pos))
-      (draw-food (get @state :food)))
+      (draw-food (get @state :food))
+      (draw-tail (my-tail state))
+  )
 )
 
 (defn rand-food [] [(* px-inc (rand-int cols)) (* px-inc (rand-int rows))])
 
-(def initial-state (atom {:pos [0 0] :dir :right :food (rand-food) :points 0}))
+(def initial-state (atom {:pos [0 0] 
+                          :dir :right 
+                          :food (rand-food) 
+                          :points 0
+                          :history []}))
+
 (defonce app-state initial-state)
 
 (defn new-pos [state]
@@ -52,20 +63,32 @@
          (every? #(<= %1 board-pix) pos) 
         )))
 
+(defn not-over-tail? [app-state] 
+  (let [pos (get @app-state :pos)]
+    (not-any? #(= pos %) (my-tail app-state))))
+
+(defn no-collision? [app-state]
+  (and (inside? app-state) (not-over-tail? app-state) 
+  ))
+
 (defn update-on-food [] (if (= (get @app-state :pos) (get @app-state :food))
                       (do (swap! app-state update-in [:points] inc) 
-                          (swap! app-state assoc :food (rand-food))
+                          (swap! app-state assoc :food (rand-food)))))
 
-                          (println "ate"))))
+(defn new-history [app-state] (conj (get @app-state :history) 
+                                    (get @app-state :pos)))
+
+(defn pos-history [app-state] (swap! app-state assoc :history (new-history app-state)))
 
 (defn tick [app-state]
+    (pos-history app-state)
     (swap! app-state update-state)
     (render-canvas app-state)
     (update-on-food)
-    (if (inside? app-state)
+    (if (no-collision? app-state)
             (js/setTimeout (fn [] (tick app-state)) 50)))
 
-#_(tick app-state)
+(tick app-state)
 
 (def key-map {37 :left 38 :down 39 :right 40 :up})
 
