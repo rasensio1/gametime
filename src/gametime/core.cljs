@@ -10,18 +10,14 @@
   (.getContext 
     (.getElementById js/document "target") "2d" ))
 (def board-pix (js/parseInt (aget context "canvas" "width")))
-;;FIND CANVAS WIDTH
 (def px-inc (/ board-pix rows))
-
-(def empty-row (vec (repeat cols 0)))
-(def empty-board (vec (repeat rows empty-row)))
 
 
 ;;pull out size of square
 (defn drawSquare [[x y]] (.fillRect context x y 10 10))
 (defn draw-food [[x y]] (.fillRect context x y 10 10))
 ;;USE CANVAS WIDTHD
-(defn clearSquare [] (.clearRect context 0 0 500 500))
+(defn clearSquare [] (.clearRect context 0 0 board-pix board-pix))
 (defn draw-tail [coll] (doseq [tuple coll] (drawSquare tuple)))
 
 (defn move [[dx dy] [x y]]  [(+ dx x) (+ dy y)])
