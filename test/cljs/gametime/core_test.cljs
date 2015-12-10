@@ -64,7 +64,15 @@
 
 (deftest test-my-tail-empty
   (is (= [] (gt/my-tail gt/initial-state)))
-  )
+)
+
+(defonce tail-state gt/initial-state)
+(deftest test-my-tail-populated
+  (gt/pos-history tail-state)
+  (swap! tail-state update-in [:points] inc)
+  (is (= [0 0] (gt/my-tail tail-state)))
+)
+
 
 
 
