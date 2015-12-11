@@ -35,11 +35,11 @@
 
 .the-button {
   position: absolute;
-  left: 210px;
-  top: 240px;
-  font-size: 2em;
+  left: 180px;
+  top: 220px;
+  font-size: 3em;
   padding: 15px;
-  border: 2px solid black;
+  letter-spacing: 0.2em;
 }
 
 #points {

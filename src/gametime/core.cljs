@@ -90,7 +90,11 @@
          "Score: " (get @app-state :points) ])
 
 (defn start-button []
-  [:div.the-button "Start" ])
+  [:div
+      "The atom " [:code "click-count"] " has value: "
+         @click-count ". "
+            [:input {:type "button" :value "Click me!"
+                                 :on-click #(swap! click-count inc)}]])
 
 (defn render-start []
     (r/render-component [start-button]
@@ -112,7 +116,7 @@
             (js/setTimeout (fn [] (tick app-state)) 50)))
 
 
-#_(tick app-state)
+(tick app-state)
 
 (defn on-js-reload []
   (println "reloaded"))
