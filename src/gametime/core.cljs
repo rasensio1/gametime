@@ -38,13 +38,13 @@
 
 (defn rand-food [] [(* px-inc (rand-int cols)) (* px-inc (rand-int rows))])
 
-(def initial-state (atom {:pos [0 0] 
+(def initial-state {:pos [0 0] 
                           :dir :right 
                           :food (rand-food) 
                           :points 0
-                          :history []}))
+                          :history []})
 
-(defonce app-state initial-state)
+(defonce app-state (atom initial-state))
 
 (defn new-pos [state]
   (let [dir  (:dir state)
@@ -94,7 +94,14 @@
                         (js/document.getElementById "points")))
 (render-points)
 
-(defn game-over [] (println "game over!"))
+(defn restart-button [] 
+      (-> (sel1 :#start-button)
+          (dommy.core/remove-class! :hidden)))
+
+(defn reset-app-state [] (reset! app-state initial-state))
+
+(defn game-over [] (do (restart-button)
+                       (reset-app-state)))
 
 (defn tick [app-state]
     (pos-history app-state)
@@ -103,7 +110,8 @@
     (update-on-food)
     (if (no-collision? app-state)
             (js/setTimeout (fn [] (tick app-state)) 50)
-            (game-over)))
+            (do (reset-app-state)
+                (game-over))))
 
 (defn hide-button [] 
   (-> (sel1 :the-button)
