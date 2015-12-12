@@ -110,8 +110,7 @@
     (update-on-food)
     (if (no-collision? app-state)
             (js/setTimeout (fn [] (tick app-state)) 50)
-            (do (reset-app-state)
-                (game-over))))
+            (game-over)))
 
 (defn hide-button [] 
   (-> (sel1 :the-button)
