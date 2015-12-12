@@ -90,11 +90,10 @@
          "Score: " (get @app-state :points) ])
 
 (defn start-button []
-  [:div
+  [:div.the-button
       "The atom " [:code "click-count"] " has value: "
-         @click-count ". "
             [:input {:type "button" :value "Click me!"
-                                 :on-click #(swap! click-count inc)}]])
+                                 :on-click #(println "clicked")}]])
 
 (defn render-start []
     (r/render-component [start-button]
