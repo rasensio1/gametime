@@ -91,8 +91,7 @@
 
 (defn start-button []
   [:div.the-button
-      "The atom " [:code "click-count"] " has value: "
-            [:input {:type "button" :value "Click me!"
+            [:input {:type "button" :value "Start"
                                  :on-click #(println "clicked")}]])
 
 (defn render-start []
