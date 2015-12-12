@@ -92,15 +92,18 @@
 (defn render-points []
     (r/render-component [points-holder]
                         (js/document.getElementById "points")))
+(render-points)
+
+(defn game-over [] (println "game over!"))
 
 (defn tick [app-state]
-    (render-points)
     (pos-history app-state)
     (swap! app-state update-pos)
     (render-canvas app-state)
     (update-on-food)
     (if (no-collision? app-state)
-            (js/setTimeout (fn [] (tick app-state)) 50)))
+            (js/setTimeout (fn [] (tick app-state)) 50)
+            (game-over)))
 
 (defn hide-button [] 
   (-> (sel1 :the-button)
