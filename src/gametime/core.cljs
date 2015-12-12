@@ -36,7 +36,9 @@
       (draw-food (get @state :food))
       (draw-tail (my-tail state))))
 
-(defn rand-food [] [(* px-inc (rand-int cols)) (* px-inc (rand-int rows))])
+(defn food-int [] (* px-inc (rand-nth (range 1 cols))))
+
+(defn rand-food [] [(food-int) (food-int)])
 
 (def initial-state {:pos [0 0] 
                           :dir :right 
@@ -92,7 +94,6 @@
 (defn render-points []
     (r/render-component [points-holder]
                         (js/document.getElementById "points")))
-(render-points)
 
 (defn restart-button [] 
       (-> (sel1 :#start-button)
@@ -100,8 +101,7 @@
 
 (defn reset-app-state [] (reset! app-state initial-state))
 
-(defn game-over [] (do (restart-button)
-                       (reset-app-state)))
+(defn game-over [] (do (restart-button)))
 
 (defn tick [app-state]
     (pos-history app-state)
@@ -119,13 +119,14 @@
 (defn start-button []
   [:div.the-button
             [:input {:type "button" :value "Start"
-                                 :on-click #(do (tick app-state)
+                                 :on-click #(do (reset-app-state)
+                                                (tick app-state)
                                                 (-> (sel1 :#start-button)
                                                     (dommy.core/add-class! :hidden)))}]])
-
 (defn render-start []
     (r/render-component [start-button]
                         (js/document.getElementById "start-button")))
+(render-points)
 (render-start)
 
 
