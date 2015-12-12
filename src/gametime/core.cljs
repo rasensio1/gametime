@@ -1,6 +1,7 @@
 (ns ^:figwheel-always gametime.core
   (:require [reagent.core :as r :refer [atom]]
-            [goog.events :as events]))
+            [goog.events :as events]
+            [dommy.core :refer-macros [sel sel1]]))
 
 (enable-console-print!)
 
@@ -84,25 +85,13 @@
 (events/listen js/document "keydown" 
                (fn [e] (swap! app-state assoc 
                               :dir (key-map (.-keyCode e)))))
-
 (defn points-holder []
         [:p 
          "Score: " (get @app-state :points) ])
 
-(defn start-button []
-  [:div.the-button
-            [:input {:type "button" :value "Start"
-                                 :on-click #(println "clicked")}]])
-
-(defn render-start []
-    (r/render-component [start-button]
-                        (js/document.getElementById "start-button")))
-
 (defn render-points []
     (r/render-component [points-holder]
                         (js/document.getElementById "points")))
-
-(render-start)
 
 (defn tick [app-state]
     (render-points)
@@ -113,8 +102,23 @@
     (if (no-collision? app-state)
             (js/setTimeout (fn [] (tick app-state)) 50)))
 
+(defn hide-button [] 
+  (-> (sel1 :the-button)
+      (dommy.core/add-class! :hidden)))
 
-(tick app-state)
+(defn start-button []
+  [:div.the-button
+            [:input {:type "button" :value "Start"
+                                 :on-click #(do (tick app-state)
+                                                (-> (sel1 :#start-button)
+                                                    (dommy.core/add-class! :hidden)))}]])
+
+(defn render-start []
+    (r/render-component [start-button]
+                        (js/document.getElementById "start-button")))
+(render-start)
+
+
 
 (defn on-js-reload []
   (println "reloaded"))

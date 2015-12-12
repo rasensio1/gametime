@@ -26,6 +26,7 @@
 }
 
 #title-text {
+  font-family: 'Orbitron', sans-serif;
   text-align: center;
   font-size: 3em;
 }
@@ -42,7 +43,12 @@
   letter-spacing: 0.2em;
 }
 
+.hidden {
+  display: none;
+}
+
 #points {
+  font-family: 'Orbitron', sans-serif;
   text-align: center;
   font-size: 2em;
 }
