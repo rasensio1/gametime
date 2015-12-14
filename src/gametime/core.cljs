@@ -110,7 +110,10 @@
                         (js/document.getElementById "game-over")))
 
 (defn game-over [] (do (restart-button)
-                       (render-over)))
+                       (render-over)
+                       (-> (sel1 :#game-over)
+                           (dommy.core/remove-class! :hidden))
+                       ))
 
 (defn tick [app-state]
     (pos-history app-state)
@@ -122,11 +125,13 @@
             (game-over)))
 
 (defn reset-game []
-(do (reset-app-state)
-    (tick app-state)
-    (-> (sel1 :#start-button)
-        (dommy.core/add-class! :hidden)))
-  )
+  (do (reset-app-state)
+      (tick app-state)
+      (-> (sel1 :#start-button)
+          (dommy.core/add-class! :hidden))
+      (-> (sel1 :#game-over)
+                (dommy.core/add-class! :hidden))
+      ))
 
 (defn start-button []
   [:div.the-button
