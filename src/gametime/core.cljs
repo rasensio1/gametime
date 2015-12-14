@@ -101,7 +101,16 @@
 
 (defn reset-app-state [] (reset! app-state initial-state))
 
-(defn game-over [] (do (restart-button)))
+(defn game-over-text []
+  [:div.game-over 
+   [:p "Game Over! Your score: " (get @app-state :points)]])
+
+(defn render-over []
+    (r/render-component [game-over-text]
+                        (js/document.getElementById "game-over")))
+
+(defn game-over [] (do (restart-button)
+                       (render-over)))
 
 (defn tick [app-state]
     (pos-history app-state)
@@ -112,17 +121,14 @@
             (js/setTimeout (fn [] (tick app-state)) 50)
             (game-over)))
 
-(defn hide-button [] 
-  (-> (sel1 :the-button)
-      (dommy.core/add-class! :hidden)))
-
 (defn start-button []
   [:div.the-button
-            [:input {:type "button" :value "Start"
-                                 :on-click #(do (reset-app-state)
-                                                (tick app-state)
-                                                (-> (sel1 :#start-button)
-                                                    (dommy.core/add-class! :hidden)))}]])
+      [:input {:type "button" 
+               :value "Start"
+               :on-click #(do (reset-app-state)
+                              (tick app-state)
+                              (-> (sel1 :#start-button)
+                                  (dommy.core/add-class! :hidden)))}]])
 (defn render-start []
     (r/render-component [start-button]
                         (js/document.getElementById "start-button")))

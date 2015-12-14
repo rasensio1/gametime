@@ -1,6 +1,7 @@
 /* some style */
 
 body {
+  background-color: #000;
   background-image: url("https://s3-us-west-2.amazonaws.com/feedbee/ti83SNAKE.jpg");
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -31,6 +32,18 @@ body {
 
 .title {
   margin: auto;
+  display: block;
+}
+
+.info {
+  position: absolute;
+  top: 20px;
+  display: block;
+  float: left;
+}
+
+.info-text {
+  color: white;
 }
 
 #title-text {
@@ -47,6 +60,16 @@ body {
   left: 150px;
   top: 220px;
   font-size: 3em;
+  padding: 15px;
+  letter-spacing: 0.2em;
+}
+
+#game-over {
+  font-family: 'Orbitron', sans-serif;
+  position: absolute;
+  left: 150px;
+  top: 290px;
+  font-size: 1em;
   padding: 15px;
   letter-spacing: 0.2em;
 }
