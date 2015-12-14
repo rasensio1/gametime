@@ -8,7 +8,8 @@
                  [org.clojure/clojurescript "1.7.170"]
                  [org.clojure/core.async "0.2.374"]
                  [prismatic/dommy "1.1.0"]
-                  [reagent "0.5.0-alpha3"]]
+                 [reagent "0.5.0-alpha3"]
+                 [prismatic/dommy "1.1.0"]]
 
   :plugins [[lein-cljsbuild "1.1.1"]
             [lein-figwheel "0.5.0-1"]

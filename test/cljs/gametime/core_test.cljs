@@ -38,8 +38,8 @@
 (deftest test-new-pos
   ( is (= [10 0] (gt/new-pos @gt/initial-state))))
 
-(deftest test-update-state 
- (is (= [10 0] (get (gt/update-state @gt/initial-state) :pos))))
+(deftest test-update-pos 
+ (is (= [10 0] (get (gt/update-pos @gt/initial-state) :pos))))
 
 (deftest test-pix-in-inc
   (is (= 10 gt/px-inc)))
