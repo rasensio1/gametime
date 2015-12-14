@@ -44,9 +44,10 @@
                     :dir :right 
                     :speed 50
                     :food {:pos (rand-food) 
-                           :speed :fast} 
+                           :speed :normal} 
                     :points 0
-                    :history []})
+                    :history []
+                    :mode :crazy})
 
 (defonce app-state (atom initial-state))
 
@@ -79,14 +80,18 @@
 (def speed-map
   { :fast (partial update-speed 0.75)
     :normal (partial update-speed 1)
-    :slow (partial update-speed 1.3)
+    :slow (partial update-speed 1.5)
   })
 
 (defn new-speed [my-speed]
   ((get speed-map (get-in @app-state [:food :speed])) my-speed)
   )
 
-(defn rand-speed [] (rand-nth (keys speed-map)))
+(defn rand-speed [] (let [mode (get @app-state :mode)] 
+                      (cond 
+                        (= mode :normal) :normal
+                        (= mode :crazy) (rand-nth (keys speed-map))
+                        )))
 
 (defn update-on-food [] (if (= (get @app-state :pos) 
                                (get-in @app-state [:food :pos]))
