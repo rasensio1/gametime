@@ -43,7 +43,8 @@
 (def initial-state {:pos [0 0] 
                     :dir :right 
                     :speed 50
-                    :food {:pos (rand-food) :type :normal} 
+                    :food {:pos (rand-food) 
+                           :speed :normal} 
                     :points 0
                     :history []})
 
@@ -72,9 +73,27 @@
   (and (inside? app-state) (not-over-tail? app-state) 
   ))
 
-(defn update-on-food [] (if (= (get @app-state :pos) (get-in @app-state [:food :pos]))
-                                (do (swap! app-state update-in [:points] inc) 
-                                    (swap! app-state assoc :food {:pos (rand-food)}))))
+(defn update-speed [mult my-speed]
+  (* mult my-speed))
+
+(def speed-map
+  { :slow   (partial update-speed 0.75)
+    :normal (partial update-speed 1)
+    :fast   (partial update-speed 1.3)
+  })
+
+(defn new-speed [my-speed]
+  ((get speed-map (get-in @app-state [:food :speed])) my-speed)
+  )
+
+(defn update-on-food [] (if (= (get @app-state :pos) 
+                               (get-in @app-state [:food :pos]))
+                                  (do (swap! app-state update-in [:points] inc) 
+                                      (swap! app-state assoc :food {:pos (rand-food) :speed :normal})
+                                      (println (get @app-state :speed))
+                                      (println (get-in @app-state [:food :speed]))
+                                      (swap! app-state assoc :speed (new-speed (get @app-state :speed)))
+                                      )))
 
 (defn new-history [app-state] 
   (conj (get @app-state :history) 
@@ -120,6 +139,7 @@
     (pos-history app-state)
     (swap! app-state update-pos)
     (render-canvas app-state)
+                                      (println (get-in @app-state [:food :speed]))
     (update-on-food)
     (if (no-collision? app-state)
             (js/setTimeout (fn [] (tick app-state)) (get @app-state :speed))
