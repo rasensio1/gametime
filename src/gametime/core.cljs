@@ -60,7 +60,7 @@
 (defn inside? [app-state]
   (let [pos (get @app-state :pos)]
     (and (every? #(>= %1 0) pos) 
-         (every? #(<= %1 board-pix) pos) 
+         (every? #(< %1 board-pix) pos) 
         )))
 
 (defn not-over-tail? [app-state] 
