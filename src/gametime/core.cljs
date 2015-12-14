@@ -118,10 +118,6 @@
         [:p 
          "Score: " (get @app-state :points) ])
 
-(defn render-points []
-    (r/render-component [points-holder]
-                        (js/document.getElementById "points")))
-
 (defn restart-button [] 
       (-> (sel1 :#start-button)
           (dommy.core/remove-class! :hidden)))
@@ -136,8 +132,13 @@
     (r/render-component [game-over-text]
                         (js/document.getElementById "game-over")))
 
+(defn render-thing [component id]
+    (r/render-component [component]
+                        (js/document.getElementById id)))
+
+
 (defn game-over [] (do (restart-button)
-                       (render-over)
+                       (render-thing game-over-text "game-over")
                        (-> (sel1 :#game-over)
                            (dommy.core/remove-class! :hidden))
                        ))
@@ -167,11 +168,8 @@
                :value "Start"
                :on-click #(reset-game)}]])
 
-(defn render-start [component id]
-    (r/render-component [component]
-                        (js/document.getElementById id)))
-(render-points)
-(render-start start-button "start-button")
+(render-thing start-button "start-button")
+(render-thing points-holder "points")
 
 
 
