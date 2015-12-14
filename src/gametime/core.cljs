@@ -44,7 +44,7 @@
                     :dir :right 
                     :speed 50
                     :food {:pos (rand-food) 
-                           :speed :normal} 
+                           :speed :fast} 
                     :points 0
                     :history []})
 
@@ -77,9 +77,9 @@
   (* mult my-speed))
 
 (def speed-map
-  { :slow   (partial update-speed 0.75)
+  { :fast (partial update-speed 0.75)
     :normal (partial update-speed 1)
-    :fast   (partial update-speed 1.3)
+    :slow (partial update-speed 1.3)
   })
 
 (defn new-speed [my-speed]
@@ -91,8 +91,6 @@
                                   (let [food-speed ()]
                                   (do (swap! app-state update-in [:points] inc) 
                                       (swap! app-state assoc-in [:food :pos] (rand-food))
-                                      (println (get @app-state :speed))
-                                      (println (get-in @app-state [:food :speed]))
                                       (swap! app-state assoc :speed (new-speed (get @app-state :speed)))
                                       ))))
 
