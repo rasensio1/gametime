@@ -33,7 +33,7 @@
 (defn render-canvas [state]
   (do (clearSquare)
       (drawSquare (get @state :pos))
-      (draw-food (get @state :food))
+      (draw-food (get-in @state [:food :pos]))
       (draw-tail (my-tail state))))
 
 (defn food-int [] (* px-inc (rand-nth (range 1 cols))))
@@ -41,10 +41,10 @@
 (defn rand-food [] [(food-int) (food-int)])
 
 (def initial-state {:pos [0 0] 
-                          :dir :right 
-                          :food (rand-food) 
-                          :points 0
-                          :history []})
+                    :dir :right 
+                    :food {:pos (rand-food)} 
+                    :points 0
+                    :history []})
 
 (defonce app-state (atom initial-state))
 
@@ -71,9 +71,9 @@
   (and (inside? app-state) (not-over-tail? app-state) 
   ))
 
-(defn update-on-food [] (if (= (get @app-state :pos) (get @app-state :food))
+(defn update-on-food [] (if (= (get @app-state :pos) (get-in @app-state [:food :pos]))
                                 (do (swap! app-state update-in [:points] inc) 
-                                    (swap! app-state assoc :food (rand-food)))))
+                                    (swap! app-state assoc :food {:pos (rand-food)}))))
 
 (defn new-history [app-state] 
   (conj (get @app-state :history) 
