@@ -167,11 +167,11 @@
                :value "Start"
                :on-click #(reset-game)}]])
 
-(defn render-start []
-    (r/render-component [start-button]
-                        (js/document.getElementById "start-button")))
+(defn render-start [component id]
+    (r/render-component [component]
+                        (js/document.getElementById id)))
 (render-points)
-(render-start)
+(render-start start-button "start-button")
 
 
 
