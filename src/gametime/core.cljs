@@ -121,14 +121,19 @@
             (js/setTimeout (fn [] (tick app-state)) 50)
             (game-over)))
 
+(defn reset-game []
+(do (reset-app-state)
+    (tick app-state)
+    (-> (sel1 :#start-button)
+        (dommy.core/add-class! :hidden)))
+  )
+
 (defn start-button []
   [:div.the-button
       [:input {:type "button" 
                :value "Start"
-               :on-click #(do (reset-app-state)
-                              (tick app-state)
-                              (-> (sel1 :#start-button)
-                                  (dommy.core/add-class! :hidden)))}]])
+               :on-click #(reset-game)}]])
+
 (defn render-start []
     (r/render-component [start-button]
                         (js/document.getElementById "start-button")))
