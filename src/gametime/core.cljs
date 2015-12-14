@@ -86,12 +86,15 @@
   ((get speed-map (get-in @app-state [:food :speed])) my-speed)
   )
 
+(defn rand-speed [] (rand-nth (keys speed-map)))
+
 (defn update-on-food [] (if (= (get @app-state :pos) 
                                (get-in @app-state [:food :pos]))
                                   (let [food-speed ()]
                                   (do (swap! app-state update-in [:points] inc) 
                                       (swap! app-state assoc-in [:food :pos] (rand-food))
                                       (swap! app-state assoc :speed (new-speed (get @app-state :speed)))
+                                      (swap! app-state assoc-in [:food :speed] (rand-speed))
                                       ))))
 
 (defn new-history [app-state] 
