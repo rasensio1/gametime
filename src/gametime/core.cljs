@@ -42,7 +42,8 @@
 
 (def initial-state {:pos [0 0] 
                     :dir :right 
-                    :food {:pos (rand-food)} 
+                    :speed 50
+                    :food {:pos (rand-food) :type :normal} 
                     :points 0
                     :history []})
 
@@ -121,7 +122,7 @@
     (render-canvas app-state)
     (update-on-food)
     (if (no-collision? app-state)
-            (js/setTimeout (fn [] (tick app-state)) 50)
+            (js/setTimeout (fn [] (tick app-state)) (get @app-state :speed))
             (game-over)))
 
 (defn reset-game []
