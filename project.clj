@@ -22,9 +22,7 @@
   :cljsbuild {:builds
               [{:id "dev"
                 :source-paths ["src"]
-
                 :figwheel {:on-jsload "gametime.core/on-js-reload"}
-
                 :compiler {:main gametime.core
                            :asset-path "js/compiled/out"
                            :output-to "resources/public/js/compiled/gametime.js"
@@ -42,7 +40,7 @@
 
                {:id "prod"
                 :source-paths ["src"]
-                :compiler {:optimizations :none
+                :compiler {:optimizations :advanced
                            :output-to "resources/public/js/gametime.js"
                            :main gametime.core
                            :asset-path "js/compiled/out"
