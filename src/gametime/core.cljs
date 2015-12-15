@@ -33,7 +33,7 @@
 (defn render-canvas [state]
   (do (clearSquare)
       (drawSquare (get @state :pos))
-      (draw-food (get @state :food))
+      (draw-food (get-in @state [:food :pos]))
       (draw-tail (my-tail state))))
 
 (defn food-int [] (* px-inc (rand-nth (range 1 cols))))
@@ -41,10 +41,14 @@
 (defn rand-food [] [(food-int) (food-int)])
 
 (def initial-state {:pos [0 0] 
-                          :dir :right 
-                          :food (rand-food) 
-                          :points 0
-                          :history []})
+                    :dir :right 
+                    :speed 50
+                    :food {:pos (rand-food) 
+                           :speed :normal} 
+                    :points 0
+                    :history []
+                    :mode :normal
+                    :crazy-mode-text "Enable Crazy Mode"})
 
 (defonce app-state (atom initial-state))
 
@@ -71,9 +75,33 @@
   (and (inside? app-state) (not-over-tail? app-state) 
   ))
 
-(defn update-on-food [] (if (= (get @app-state :pos) (get @app-state :food))
-                                (do (swap! app-state update-in [:points] inc) 
-                                    (swap! app-state assoc :food (rand-food)))))
+(defn update-speed [mult my-speed]
+  (* mult my-speed))
+
+(def speed-map
+  { :fast (partial update-speed 0.4)
+    :normal (partial update-speed 1)
+    :slow (partial update-speed 1.5)
+  })
+
+(defn new-speed [my-speed]
+  ((get speed-map (get-in @app-state [:food :speed])) my-speed)
+  )
+
+(defn rand-speed [] (let [mode (get @app-state :mode)] 
+                      (cond 
+                        (= mode :normal) :normal
+                        (= mode :crazy) (rand-nth (keys speed-map))
+                        )))
+
+(defn update-on-food [] (if (= (get @app-state :pos) 
+                               (get-in @app-state [:food :pos]))
+                                  (let [food-speed ()]
+                                  (do (swap! app-state update-in [:points] inc) 
+                                      (swap! app-state assoc-in [:food :pos] (rand-food))
+                                      (swap! app-state assoc :speed (new-speed (get @app-state :speed)))
+                                      (swap! app-state assoc-in [:food :speed] (rand-speed))
+                                      ))))
 
 (defn new-history [app-state] 
   (conj (get @app-state :history) 
@@ -88,40 +116,55 @@
                (fn [e] (swap! app-state assoc 
                               :dir (key-map (.-keyCode e)))))
 (defn points-holder []
-        [:p 
-         "Score: " (get @app-state :points) ])
-
-(defn render-points []
-    (r/render-component [points-holder]
-                        (js/document.getElementById "points")))
+        [:p "Score: " (get @app-state :points) ])
 
 (defn restart-button [] 
       (-> (sel1 :#start-button)
           (dommy.core/remove-class! :hidden)))
 
-(defn reset-app-state [] (reset! app-state initial-state))
+(defn reset-app-state [] (let [old-mode (get @app-state :mode)
+                               old-text (get @app-state :crazy-mode-text)]
+                              (do 
+                                 (reset! app-state initial-state)
+                                 (swap! app-state assoc :mode old-mode )
+                                 (swap! app-state assoc :crazy-mode-text old-text)
+                                 )))
 
 (defn game-over-text []
   [:div.game-over 
    [:p "Game Over! Your score: " (get @app-state :points)]])
 
-(defn render-over []
-    (r/render-component [game-over-text]
-                        (js/document.getElementById "game-over")))
+(defn render-thing [component id]
+    (r/render-component [component]
+                        (js/document.getElementById id)))
+
 
 (defn game-over [] (do (restart-button)
-                       (render-over)
+                       (render-thing game-over-text "game-over")
                        (-> (sel1 :#game-over)
-                           (dommy.core/remove-class! :hidden))
-                       ))
+                           (dommy.core/remove-class! :hidden))))
+
+(defn switch-mode []
+  (let [modes {:normal :crazy :crazy :normal}
+        texts {:crazy "Disable Crazy Mode" :normal "Enable Crazy Mode"}
+        mode (get @app-state :mode)]
+    (do (swap! app-state assoc :mode (get modes mode))
+        (swap! app-state assoc :crazy-mode-text (get texts (get @app-state :mode))))))
+
+(defn crazy-button []
+  [:div.crazy-button
+      [:input#clear {:type "button" 
+               :value (get @app-state :crazy-mode-text)
+               :on-click #(switch-mode)}]])
 
 (defn tick [app-state]
     (pos-history app-state)
     (swap! app-state update-pos)
     (render-canvas app-state)
+    (println (get @app-state :mode))
     (update-on-food)
     (if (no-collision? app-state)
-            (js/setTimeout (fn [] (tick app-state)) 50)
+            (js/setTimeout (fn [] (tick app-state)) (get @app-state :speed))
             (game-over)))
 
 (defn reset-game []
@@ -130,8 +173,7 @@
       (-> (sel1 :#start-button)
           (dommy.core/add-class! :hidden))
       (-> (sel1 :#game-over)
-                (dommy.core/add-class! :hidden))
-      ))
+                (dommy.core/add-class! :hidden))))
 
 (defn start-button []
   [:div.the-button
@@ -139,13 +181,9 @@
                :value "Start"
                :on-click #(reset-game)}]])
 
-(defn render-start []
-    (r/render-component [start-button]
-                        (js/document.getElementById "start-button")))
-(render-points)
-(render-start)
-
-
+(render-thing start-button "start-button")
+(render-thing points-holder "points")
+(render-thing crazy-button "crazy-button")
 
 (defn on-js-reload []
   (println "reloaded"))
