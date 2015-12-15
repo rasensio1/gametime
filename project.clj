@@ -40,6 +40,15 @@
                            :source-map true
                            :cache-analysis true }}
 
+               {:id "prod"
+                :source-paths ["src"]
+                :compiler {:optimizations :advanced
+                           :output-to "resources/public/js/gametime.js"
+                           :main gametime.core
+                           :asset-path "js/compiled/out"
+                           :source-map-timestamp true}}
+               ]}
+
                ;; This next build is an compressed minified build for
                ;; production. You can build this with:
                ;; lein cljsbuild once min]}
