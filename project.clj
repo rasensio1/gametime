@@ -47,6 +47,7 @@
                 :source-paths ["src"]
                 :compiler {:output-to "resources/public/js/compiled/gametime.js"
                            :main gametime.core
+                           :asset-path "js/compiled/test/out"
                            :optimizations :advanced
                            :pretty-print false}}]}
 
