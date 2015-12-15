@@ -17,7 +17,7 @@ You need to have Java and Leiningen installed.
     
     brew install leiningen
     
-Clone down the repository and run
+Clone down the repository, cd into the directory and run
 
     lein figwheel
 
