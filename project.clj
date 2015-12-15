@@ -42,7 +42,7 @@
 
                {:id "prod"
                 :source-paths ["src"]
-                :compiler {:optimizations :advanced
+                :compiler {:optimizations :none
                            :output-to "resources/public/js/gametime.js"
                            :main gametime.core
                            :asset-path "js/compiled/out"
