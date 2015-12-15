@@ -47,7 +47,8 @@
                            :speed :normal} 
                     :points 0
                     :history []
-                    :mode :crazy})
+                    :mode :normal
+                    :crazy-mode-text "Enable Crazy Mode"})
 
 (defonce app-state (atom initial-state))
 
@@ -115,22 +116,23 @@
                (fn [e] (swap! app-state assoc 
                               :dir (key-map (.-keyCode e)))))
 (defn points-holder []
-        [:p 
-         "Score: " (get @app-state :points) ])
+        [:p "Score: " (get @app-state :points) ])
 
 (defn restart-button [] 
       (-> (sel1 :#start-button)
           (dommy.core/remove-class! :hidden)))
 
-(defn reset-app-state [] (reset! app-state initial-state))
+(defn reset-app-state [] (let [old-mode (get @app-state :mode)
+                               old-text (get @app-state :crazy-mode-text)]
+                              (do 
+                                 (reset! app-state initial-state)
+                                 (swap! app-state assoc :mode old-mode )
+                                 (swap! app-state assoc :crazy-mode-text old-text)
+                                 )))
 
 (defn game-over-text []
   [:div.game-over 
    [:p "Game Over! Your score: " (get @app-state :points)]])
-
-(defn render-over []
-    (r/render-component [game-over-text]
-                        (js/document.getElementById "game-over")))
 
 (defn render-thing [component id]
     (r/render-component [component]
@@ -140,14 +142,26 @@
 (defn game-over [] (do (restart-button)
                        (render-thing game-over-text "game-over")
                        (-> (sel1 :#game-over)
-                           (dommy.core/remove-class! :hidden))
-                       ))
+                           (dommy.core/remove-class! :hidden))))
+
+(defn switch-mode []
+  (let [modes {:normal :crazy :crazy :normal}
+        texts {:crazy "Disable Crazy Mode" :normal "Enable Crazy Mode"}
+        mode (get @app-state :mode)]
+    (do (swap! app-state assoc :mode (get modes mode))
+        (swap! app-state assoc :crazy-mode-text (get texts (get @app-state :mode))))))
+
+(defn crazy-button []
+  [:div.crazy-button
+      [:input#clear {:type "button" 
+               :value (get @app-state :crazy-mode-text)
+               :on-click #(switch-mode)}]])
 
 (defn tick [app-state]
     (pos-history app-state)
     (swap! app-state update-pos)
     (render-canvas app-state)
-                                      (println (get-in @app-state [:food :speed]))
+    (println (get @app-state :mode))
     (update-on-food)
     (if (no-collision? app-state)
             (js/setTimeout (fn [] (tick app-state)) (get @app-state :speed))
@@ -159,8 +173,7 @@
       (-> (sel1 :#start-button)
           (dommy.core/add-class! :hidden))
       (-> (sel1 :#game-over)
-                (dommy.core/add-class! :hidden))
-      ))
+                (dommy.core/add-class! :hidden))))
 
 (defn start-button []
   [:div.the-button
@@ -170,8 +183,7 @@
 
 (render-thing start-button "start-button")
 (render-thing points-holder "points")
-
-
+(render-thing crazy-button "crazy-button")
 
 (defn on-js-reload []
   (println "reloaded"))

@@ -52,8 +52,6 @@ body {
   font-size: 3em;
 }
 
-#start-button {
-}
 
 .the-button {
   position: absolute;
@@ -62,6 +60,18 @@ body {
   font-size: 3em;
   padding: 15px;
   letter-spacing: 0.2em;
+}
+
+.crazy-button {
+  position: absolute;
+  left: center;
+  top: 20px;
+  font-size: 0.8em;
+  padding: 5px;
+}
+
+.clear {
+  background-color:rgba(0, 0, 0, 1.0)
 }
 
 #game-over {
