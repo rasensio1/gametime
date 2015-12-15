@@ -42,14 +42,7 @@
 
                ;; This next build is an compressed minified build for
                ;; production. You can build this with:
-               ;; lein cljsbuild once min
-               {:id "min"
-                :source-paths ["src"]
-                :compiler {:output-to "resources/public/js/compiled/gametime.js"
-                           :main gametime.core
-                           :asset-path "js/compiled/test/out"
-                           :optimizations :advanced
-                           :pretty-print false}}]}
+               ;; lein cljsbuild once min]}
 
   :figwheel {;; :http-server-root "public" ;; default and assumes "resources"
              ;; :server-port 3449 ;; default
