@@ -79,7 +79,7 @@
   (* mult my-speed))
 
 (def speed-map
-  { :fast (partial update-speed 0.75)
+  { :fast (partial update-speed 0.4)
     :normal (partial update-speed 1)
     :slow (partial update-speed 1.5)
   })
