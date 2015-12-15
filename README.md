@@ -11,12 +11,14 @@ Implementation of the classic "Snake" in ClojureScript
 
 ## Setup
 
-To get an interactive development environment run:
+You need to have Java and Leiningen installed.
+
+    java -version
+    
+    brew install leiningen
+    
+Clone down the repository and run
 
     lein figwheel
-    
-## License
 
-Copyright © 2014 FIXME
-
-Distributed under the Eclipse Public License either version 1.0 or (at your option) any later version.
+You can now play the game on http://localhost:3449/ and changes made will be reflected in real time!
