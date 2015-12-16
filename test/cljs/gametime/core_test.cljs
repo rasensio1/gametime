@@ -77,7 +77,6 @@
   (is (= [0 0] (get @tail-state-2 :pos)))
   (is (= true (gt/not-over-tail? tail-state-2))))
 
-
 (defn run-tests []
       (cljs.test/run-all-tests #"gametime.*-test"))
 (run-tests)
