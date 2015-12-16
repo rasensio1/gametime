@@ -64,16 +64,15 @@
 (defn inside? [app-state]
   (let [pos (get @app-state :pos)]
     (and (every? #(>= %1 0) pos) 
-         (every? #(< %1 board-pix) pos) 
-        )))
+         (every? #(< %1 board-pix) pos))))
 
 (defn not-over-tail? [app-state] 
   (let [pos (get @app-state :pos)]
     (not-any? #(= pos %) (my-tail app-state))))
 
 (defn no-collision? [app-state]
-  (and (inside? app-state) (not-over-tail? app-state) 
-  ))
+  (and (inside? app-state) 
+       (not-over-tail? app-state)))
 
 (defn update-speed [mult my-speed]
   (* mult my-speed))
@@ -161,7 +160,6 @@
     (pos-history app-state)
     (swap! app-state update-pos)
     (render-canvas app-state)
-    (println (get @app-state :mode))
     (update-on-food)
     (if (no-collision? app-state)
             (js/setTimeout (fn [] (tick app-state)) (get @app-state :speed))
