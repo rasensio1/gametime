@@ -171,11 +171,11 @@
                :value "Start"
                :on-click #(reset-game)}]])
 
-#(do (
-  (% start-button "start-button")
-  (% points-holder "points")
-  (% crazy-button "crazy-button")
-) render-thing)
+(def render-me [[start-button "start-button"]
+                [points-holder "points"]
+                [crazy-button "crazy-button"]])
+
+(map apply render-thing render-me)
 
 (defn on-js-reload []
   (println "reloaded"))
