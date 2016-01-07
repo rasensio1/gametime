@@ -24,8 +24,7 @@
 (def movement { :left  (partial move [(* px-inc -1) 0])
                 :right (partial move [px-inc 0])
                 :up    (partial move [0 px-inc])
-                :down  (partial move [0 (* px-inc -1)])
-               })
+                :down  (partial move [0 (* px-inc -1)])})
 
 (defn my-tail [state] (vec (take (get @state :points) 
                             (reverse (get @state :history)))))
@@ -80,25 +79,24 @@
 (def speed-map
   { :fast (partial update-speed 0.4)
     :normal (partial update-speed 1)
-    :slow (partial update-speed 1.5)
-  })
+    :slow (partial update-speed 1.5)})
 
 (defn new-speed [my-speed]
-  ((get speed-map (get-in @app-state [:food :speed])) my-speed)
-  )
+  ((get speed-map (get-in @app-state [:food :speed])) my-speed))
 
-(defn rand-speed [] (let [mode (get @app-state :mode)] 
-                      (cond 
-                        (= mode :normal) :normal
-                        (= mode :crazy) (rand-nth (keys speed-map))
-                        )))
+(defn rand-speed [] 
+  (let [mode (get @app-state :mode)] 
+    (cond 
+      (= mode :normal) :normal
+      (= mode :crazy) (rand-nth (keys speed-map)))))
 
-(defn update-on-food [] (if (= (get @app-state :pos) 
-                               (get-in @app-state [:food :pos]))
-                                  (do (swap! app-state update-in [:points] inc) 
-                                      (swap! app-state assoc-in [:food :pos] (rand-food))
-                                      (swap! app-state assoc :speed (new-speed (get @app-state :speed)))
-                                      (swap! app-state assoc-in [:food :speed] (rand-speed)))))
+(defn update-on-food [] 
+  (if (= (get @app-state :pos) 
+         (get-in @app-state [:food :pos]))
+      (do (swap! app-state update-in [:points] inc) 
+          (swap! app-state assoc-in [:food :pos] (rand-food))
+          (swap! app-state assoc :speed (new-speed (get @app-state :speed)))
+          (swap! app-state assoc-in [:food :speed] (rand-speed)))))
 
 (defn new-history [app-state] 
   (conj (get @app-state :history) 
@@ -109,11 +107,10 @@
          :history (new-history app-state)))
 
 (def key-map {37 :left 38 :down 39 :right 40 :up})
-(events/listen js/document "keydown" 
-               (fn [e] (swap! app-state assoc 
-                              :dir (key-map (.-keyCode e)))))
-(defn points-holder []
-        [:p "Score: " (get @app-state :points) ])
+  (events/listen js/document "keydown" 
+       (fn [e] (swap! app-state assoc :dir (key-map (.-keyCode e)))))
+
+(defn points-holder [] [:p "Score: " (get @app-state :points) ])
 
 (defn restart-button [] 
       (-> (sel1 :#start-button)
@@ -121,11 +118,9 @@
 
 (defn reset-app-state [] (let [old-mode (get @app-state :mode)
                                old-text (get @app-state :crazy-mode-text)]
-                              (do 
-                                 (reset! app-state initial-state)
-                                 (swap! app-state assoc :mode old-mode )
-                                 (swap! app-state assoc :crazy-mode-text old-text)
-                                 )))
+                              (do (reset! app-state initial-state)
+                                  (swap! app-state assoc :mode old-mode )
+                                  (swap! app-state assoc :crazy-mode-text old-text))))
 
 (defn game-over-text []
   [:div.game-over 
@@ -134,7 +129,6 @@
 (defn render-thing [component id]
     (r/render-component [component]
                         (js/document.getElementById id)))
-
 
 (defn game-over [] (do (restart-button)
                        (render-thing game-over-text "game-over")
@@ -177,9 +171,11 @@
                :value "Start"
                :on-click #(reset-game)}]])
 
-(render-thing start-button "start-button")
-(render-thing points-holder "points")
-(render-thing crazy-button "crazy-button")
+#(do (
+  (% start-button "start-button")
+  (% points-holder "points")
+  (% crazy-button "crazy-button")
+) render-thing)
 
 (defn on-js-reload []
   (println "reloaded"))
